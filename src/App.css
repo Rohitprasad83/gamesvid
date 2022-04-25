@@ -1,51 +1,87 @@
-.App {
-  text-align: center;
+.home__container {
+    display: grid;
+    width: 100%;
+    height: auto;
+    grid-template-areas: 'header' 'main';
+    grid-template-rows: 8rem auto;
+    grid-template-columns: 1fr;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.main__container {
+    grid-area: main;
+    margin: 3rem 0;
+    min-height: 80vh;
+    border: 1px solid var(--gray);
+    padding: 5rem 0;
+    border-radius: 1rem;
+    background-color: var(--white)
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.navbar {
+    grid-area: header;
+    height: 8rem;
+    background-color: var(--white);
 }
 
-.App-header {
-  background-color: #22201c;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
+.navbar__header {
+    font-size: 3rem;
 }
 
-.App-link {
-  color: #61dafb;
+.navbar-btn {
+    border-radius: 0;
+    font-size: 1.6rem;
 }
 
-.brand-title {
-  font-size: 3rem;
-  color: #d9d9d9;
+.center__image {
+    aspect-ratio: 16 / 6;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
 }
 
-.brand-title span {
-  color: #ffde59;
+.video-card {
+    width: 30rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--pure-white)
 }
 
-.brand-description {
-  font-size: 1.4rem;
+.video-heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
-.links {
-  display: flex;
+.home-banner {
+    margin: 3rem 5rem;
 }
 
-.links a {
-  color: #d9d9d9;
-  font-size: 1.2rem;
-  margin: 1rem;
+.videos-container {
+    margin: 4rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .navbar__header {
+        font-size: 2.5rem;
+    }
+    .center__image {
+        aspect-ratio: 16 / 9;
+    }
+    .navbar-btn {
+        font-size: 1.4rem;
+        width: 8rem;
+    }
+    .home-banner {
+        margin: 3rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .center__image {
+        aspect-ratio: 16 / 10;
+    }
 }
