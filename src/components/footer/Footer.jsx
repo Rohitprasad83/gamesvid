@@ -17,7 +17,7 @@ export default function Footer() {
       </div>
       <div className="footer-item">
         <span>
-          <i class="fa-solid fa-layer-group"></i>
+          <i className="fa-solid fa-layer-group"></i>
         </span>
         <span>Playlist</span>
       </div>
