@@ -53,13 +53,22 @@
     width: 30rem;
     display: flex;
     flex-direction: column;
-    background-color: var(--pure-white)
+    background-color: var(--pure-white);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .video-heading {
     display: flex;
     align-items: center;
     width: 100%;
+}
+
+.video-channel {
+    padding: 1rem;
+}
+
+.video-footer {
+    padding: 1rem;
 }
 
 .home-banner {
@@ -71,7 +80,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 3rem;
-    justify-content: center;
+    padding: 1rem;
 }
 
 .footer-item {

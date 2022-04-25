@@ -11,7 +11,7 @@ export default function VideoCard() {
         </div>
         <span className="video-title">Title for the Video</span>
       </div>
-      <div>Channel</div>
+      <div className="video-channel">Channel</div>
       <div className="video-footer">
         <span>Views</span>
         <span>Age of the video</span>
