@@ -95,6 +95,12 @@
     .home-banner {
         margin: 3rem 1rem;
     }
+    .footer-item {
+        font-size: 1.8rem;
+    }
+    .footer-item>span:nth-child(2) {
+        display: none;
+    }
 }
 
 @media (max-width: 576px) {

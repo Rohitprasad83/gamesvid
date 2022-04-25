@@ -7,37 +7,37 @@ export default function Footer() {
         <span>
           <i className="fa-solid fa-house"></i>
         </span>
-        Home
+        <span>Home</span>
       </div>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-compass"></i>
         </span>
-        Explore
+        <span>Explore</span>
       </div>
       <div className="footer-item">
         <span>
           <i class="fa-solid fa-layer-group"></i>
         </span>
-        Playlist
+        <span>Playlist</span>
       </div>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-heart"></i>
         </span>
-        Liked Videos
+        <span>Liked Videos</span>
       </div>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-clock"></i>
         </span>
-        Watch Later
+        <span>Watch Later</span>
       </div>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-clock-rotate-left"></i>
         </span>
-        History
+        <span>History</span>
       </div>
     </div>
   )
