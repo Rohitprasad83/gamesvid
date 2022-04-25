@@ -6,7 +6,7 @@ export default function VideoCard() {
     <div className="video-card text__md">
       <img src={videoCard} alt="Video Card" />
       <div className="video-heading">
-        <div class="avatar avatar__sm">
+        <div className="avatar avatar__sm">
           <img src={avatarVideo} alt="avatar for Video" />
         </div>
         <span className="video-title">Title for the Video</span>

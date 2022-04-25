@@ -2,18 +2,14 @@
     display: grid;
     width: 100%;
     height: auto;
-    grid-template-areas: 'header' 'main';
-    grid-template-rows: 8rem auto;
+    grid-template-areas: "header   header   header" "main     main     main" "footer   footer   footer";
+    grid-template-rows: 8rem 1fr 5rem;
     grid-template-columns: 1fr;
 }
 
 .main__container {
     grid-area: main;
-    margin: 3rem 0;
     min-height: 80vh;
-    border: 1px solid var(--gray);
-    padding: 5rem 0;
-    border-radius: 1rem;
     background-color: var(--white)
 }
 
@@ -21,6 +17,20 @@
     grid-area: header;
     height: 8rem;
     background-color: var(--white);
+}
+
+.footer {
+    grid-area: footer;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--pure-white);
+    border-top: 2px solid var(--gray);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 6rem;
 }
 
 .navbar__header {
