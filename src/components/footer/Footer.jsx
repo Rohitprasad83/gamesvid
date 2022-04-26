@@ -1,20 +1,20 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 export default function Footer() {
   return (
     <div className="footer text__md">
-      <div className="footer-item">
+      <Link to="/" className="footer-item">
         <span>
           <i className="fa-solid fa-house"></i>
         </span>
         <span>Home</span>
-      </div>
-      <div className="footer-item">
+      </Link>
+      <Link to="/videos" className="footer-item">
         <span>
           <i className="fa-solid fa-compass"></i>
         </span>
         <span>Explore</span>
-      </div>
+      </Link>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-layer-group"></i>
