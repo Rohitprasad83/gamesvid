@@ -53,6 +53,7 @@
     width: 30rem;
     display: flex;
     flex-direction: column;
+    padding: 0.5rem;
     background-color: var(--pure-white);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -61,14 +62,29 @@
     display: flex;
     align-items: center;
     width: 100%;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.video-avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .video-channel {
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 4.3rem;
 }
 
 .video-footer {
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 4.3rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.video-option {
+    cursor: pointer
 }
 
 .home-banner {
