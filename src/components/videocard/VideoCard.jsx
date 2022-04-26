@@ -17,7 +17,7 @@ export default function VideoCard({ video }) {
   } = video
   return (
     <div className="video-card text__md">
-      <img src={thumbnail} alt={alt} />
+      <img src={thumbnail} alt={alt} className="video-thumbnail" />
       <div className="video-heading">
         <div className="video-avatar">
           <img src={avatar} alt="avatar for Video" className="video-avatar" />
