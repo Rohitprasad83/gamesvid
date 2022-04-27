@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import Navbar from 'components/navbar/Navbar'
 import Footer from 'components/footer/Footer'
 import VideoCard from 'components/videocard/VideoCard'
-
+import axios from 'axios'
 export default function VideoListing() {
   const [videos, setVideos] = useState([])
   useEffect(() => {
-    ;(async () => {
-      const response = await fetch('/api/videos')
-      const data = await response.json()
-      setVideos(data.videos)
-    })()
-  })
+    try {
+      ;(async () => {
+        const response = await axios.get('/api/videos')
+        setVideos(response.data.videos)
+      })()
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
   return (
     <div>
       <div className="home__container">
