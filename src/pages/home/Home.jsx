@@ -14,12 +14,7 @@ export default function Home() {
           className="responsive__img center__image"
         />
         <h5 className="text-left home-banner">Trending Videos</h5>
-        <div className="videos-container">
-          <VideoCard />
-          <VideoCard />
-          <VideoCard />
-          <VideoCard />
-        </div>
+        <div className="videos-container"></div>
       </div>
       <Footer />
     </div>
