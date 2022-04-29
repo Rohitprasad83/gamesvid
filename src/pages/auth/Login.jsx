@@ -31,7 +31,7 @@ export function Login() {
       })
       localStorage.setItem('token', response.data.encodedToken)
       setUsers(response.data.foundUser)
-      // response.status === 200 && navigation('/')
+      response.status === 200 && navigation('/')
     } catch (err) {
       console.log(err)
       setError("Could'nt Login Up, Please try Again!")
