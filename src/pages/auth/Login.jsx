@@ -2,26 +2,26 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import authStyle from './auth.module.css'
 import axios from 'axios'
-// import { useAuth } from 'context/auth-context'
+import { useAuth } from 'context/auth-context'
 // import { successToast, errorToast } from 'components/toast/toasts'
-// import { useTitle } from 'utils/useTitle'
+import { useTitle } from 'utils/useTitle'
 
 export function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigation = useNavigate()
   const [error, setError] = useState(null)
-  // const { setUsers, encodedToken } = useAuth()
+  const { setUsers, encodedToken } = useAuth()
   const [showPassword, setShowPassword] = useState('password')
 
-  //   useTitle('| Login')
+  useTitle('| Login')
 
-  //   useEffect(() => {
-  //     if (encodedToken) {
-  //       navigation('/home')
-  //       successToast('Welcome Back to Notes Banao')
-  //     }
-  //   })
+  useEffect(() => {
+    if (encodedToken) {
+      navigation('/')
+      // successToast('Welcome Back to Notes Banao')
+    }
+  })
   const loginHandler = async e => {
     e.preventDefault()
     try {
@@ -30,9 +30,10 @@ export function Login() {
         password,
       })
       localStorage.setItem('token', response.data.encodedToken)
-      // setUsers(response.data.foundUser)
-      response.status === 200 && navigation('/home')
+      setUsers(response.data.foundUser)
+      // response.status === 200 && navigation('/')
     } catch (err) {
+      console.log(err)
       setError("Could'nt Login Up, Please try Again!")
       //   errorToast(error)
     }
