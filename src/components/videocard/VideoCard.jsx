@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 export function VideoCard({ video }) {
   const {
     _id,
@@ -16,12 +17,12 @@ export function VideoCard({ video }) {
   return (
     <div className="video-card text__md">
       <img src={thumbnail} alt={alt} className="video-thumbnail" />
-      <div className="video-heading">
+      <Link to={`/videos/${_id}`} className="video-heading">
         <div className="video-avatar">
           <img src={avatar} alt="avatar for Video" className="video-avatar" />
         </div>
         <span className="video-title font__bold">{title}</span>
-      </div>
+      </Link>
       <div className="video-channel font__regular text__md">{creator}</div>
       <div className="video-footer">
         <span>{views} views</span>
