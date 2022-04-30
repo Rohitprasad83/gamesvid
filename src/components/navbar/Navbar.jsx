@@ -1,7 +1,7 @@
 import { useAuth } from 'context'
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function Navbar() {
+export function Navbar() {
   const { setEncodedToken } = useAuth
 
   const encodedToken = localStorage.getItem('token')
