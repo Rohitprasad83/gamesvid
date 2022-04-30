@@ -82,7 +82,7 @@ export function Login() {
             name="password"
             value={password}
             placeholder="Enter your password"
-            className={`form__group__input ${authStyle['input']}`}
+            className={`form__group__input no-border ${authStyle['input']}`}
             onChange={e => setPassword(e.target.value)}
           />
           <span>
@@ -113,7 +113,7 @@ export function Login() {
           </span>
         </div>
         <button
-          className={`"btn btn__warning ${authStyle['login']}`}
+          className={`"btn btn__error ${authStyle['login']}`}
           onClick={loginHandler}
           disabled={!allFieldsAreFilled}>
           <i className="fas fa-sign-in-alt login__icon"></i>
@@ -126,7 +126,9 @@ export function Login() {
           Fill Dummy details
         </button>
         <div className="register text__center">
-          <Link to="/signup"> Create a new account </Link>
+          <Link to="/signup" className="text-underline">
+            Create a new account
+          </Link>
         </div>
       </form>
     </div>

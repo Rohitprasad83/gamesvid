@@ -138,6 +138,22 @@
     cursor: pointer;
 }
 
+.text-underline {
+    text-decoration: underline;
+}
+
+.form__group__input {
+    border: 1px solid var(--error);
+}
+
+.no-border {
+    border: 0;
+}
+
+.msg {
+    width: 100%;
+}
+
 @media (max-width: 768px) {
     .navbar__header {
         font-size: 2.5rem;

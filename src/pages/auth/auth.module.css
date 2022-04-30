@@ -1,12 +1,13 @@
 .form__group {
     color: var(--dark);
     width: 50rem;
-    border-radius: 5rem;
+    border-radius: 1rem;
     height: max-content;
     justify-content: space-evenly;
     padding: 5rem;
     margin: 5rem auto 2rem auto;
     gap: 1rem;
+    color: var(--error);
 }
 
 .heading {
@@ -22,11 +23,6 @@
 .input {
     border-radius: 2rem;
     padding: 2rem;
-    border: 1px solid var(--dark);
-}
-
-input:nth-child(1) {
-    border: 0
 }
 
 .input:focus {
@@ -39,7 +35,7 @@ input:nth-child(1) {
 }
 
 .form__password {
-    border: 1px solid var(--dark);
+    border: 1px solid var(--error);
     display: flex;
     padding: 0;
     border-radius: 2rem;

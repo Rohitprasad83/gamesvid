@@ -187,7 +187,7 @@ export function Signup() {
           </label>
         </div>
         <button
-          className={`"btn btn__warning ${authStyle['login']}`}
+          className={`"btn btn__error ${authStyle['login']}`}
           type="submit"
           disabled={!allFieldsAreFilled}>
           Create a new Account
@@ -199,7 +199,9 @@ export function Signup() {
           SignUp with Dummy Details
         </button>
         <div className="register text__center">
-          <Link to="/login"> Already have an account </Link>
+          <Link to="/login" className="text-underline">
+            Already have an account
+          </Link>
         </div>
       </form>
     </div>
