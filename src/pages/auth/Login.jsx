@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useAuth } from 'context/auth-context'
 // import { successToast, errorToast } from 'components/toast/toasts'
 import { useTitle } from 'utils/useTitle'
+import { validateEmail, validatePass } from 'utils/authenticationUtils'
 
 export function Login() {
   const [email, setEmail] = useState('')
@@ -24,21 +25,24 @@ export function Login() {
   })
   const loginHandler = async e => {
     e.preventDefault()
-    try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password,
-      })
-      localStorage.setItem('token', response.data.encodedToken)
-      setUsers(response.data.foundUser)
-      response.status === 200 && navigation('/')
-    } catch (err) {
-      console.log(err)
-      setError("Could'nt Login Up, Please try Again!")
-      //   errorToast(error)
+    if (email && password) {
+      try {
+        const response = await axios.post('/api/auth/login', {
+          email,
+          password,
+        })
+        localStorage.setItem('token', response.data.encodedToken)
+        setUsers(response.data.foundUser)
+        response.status === 200 && navigation('/')
+      } catch (err) {
+        console.log(err)
+        setError("Could'nt Login Up, Please try Again!")
+        //   errorToast(error)
+      }
     }
   }
-  const fillDummyDetails = () => {
+  const fillDummyDetails = e => {
+    e.preventDefault()
     setEmail('adarshbalika@gmail.com')
     setPassword('adarshBalika123')
   }
@@ -49,9 +53,7 @@ export function Login() {
   }
   return (
     <div>
-      <form
-        onClick={loginHandler}
-        className={`form__group ${authStyle['form__group']}`}>
+      <form className={`form__group ${authStyle['form__group']}`}>
         <h4 className={authStyle['heading']}>Login</h4>
         <label htmlFor="email">Email</label>
         <input
@@ -63,32 +65,56 @@ export function Login() {
           className={`form__group__input ${authStyle['input']}`}
           onChange={e => setEmail(e.target.value)}
         />
+        {email === '' ? (
+          true
+        ) : validateEmail(email) ? (
+          true
+        ) : (
+          <div className="msg login__error">
+            <i className="fas fa-exclamation-triangle"></i> Enter correct Email
+          </div>
+        )}
         <label htmlFor="password">Password</label>
-        <input
-          type={showPassword}
-          id="password"
-          name="password"
-          value={password}
-          placeholder="Enter your password"
-          className={`form__group__input ${authStyle['input']}`}
-          onChange={e => setPassword(e.target.value)}
-        />
-
+        <div className={authStyle['form__password']}>
+          <input
+            type={showPassword}
+            id="password"
+            name="password"
+            value={password}
+            placeholder="Enter your password"
+            className={`form__group__input ${authStyle['input']}`}
+            onChange={e => setPassword(e.target.value)}
+          />
+          <span>
+            {showPassword === 'text' ? (
+              <i
+                className="fa-solid fa-eye pointer"
+                onClick={showPasswordHandler}></i>
+            ) : (
+              <i
+                className="fa-solid fa-eye-slash pointer"
+                onClick={showPasswordHandler}></i>
+            )}
+          </span>
+        </div>
+        {password === '' ? (
+          true
+        ) : validatePass(password) ? (
+          true
+        ) : (
+          <div className="msg login__error">
+            <i className="fas fa-exclamation-triangle"></i> Password must have
+            Minimum eight characters and a number
+          </div>
+        )}
         <div className={`form__bottom ${authStyle['form__bottom']}`}>
-          <label className="text__md" onClick={showPasswordHandler}>
-            <input
-              type="checkbox"
-              checked={showPassword === 'text' ? 'checked' : false}
-            />
-            Show Password
-          </label>
           <span className="forgot__password text__bold text__md">
             Forgot your password?
           </span>
         </div>
         <button
           className={`"btn btn__warning ${authStyle['login']}`}
-          type="submit"
+          onClick={loginHandler}
           disabled={!allFieldsAreFilled}>
           <i className="fas fa-sign-in-alt login__icon"></i>
           Login

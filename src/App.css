@@ -134,6 +134,10 @@
     cursor: pointer;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .navbar__header {
         font-size: 2.5rem;
