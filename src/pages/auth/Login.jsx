@@ -4,7 +4,7 @@ import authStyle from './auth.module.css'
 import axios from 'axios'
 import { useAuth } from 'context/auth-context'
 import { Navbar, Footer } from 'components'
-// import { successToast, errorToast } from 'components/toast/toasts'
+import { successToast, errorToast } from 'components/toast/toasts'
 import { useTitle } from 'utils/useTitle'
 import { validateEmail, validatePass } from 'utils/authenticationUtils'
 
@@ -21,7 +21,7 @@ export function Login() {
   useEffect(() => {
     if (encodedToken) {
       navigation('/')
-      // successToast('Welcome Back to Notes Banao')
+      successToast('Welcome Back to GamesVid')
     }
   })
   const loginHandler = async e => {
@@ -36,9 +36,8 @@ export function Login() {
         setUsers(response.data.foundUser)
         response.status === 200 && navigation('/')
       } catch (err) {
-        console.log(err)
         setError("Could'nt Login Up, Please try Again!")
-        //   errorToast(error)
+        errorToast(error)
       }
     }
   }

@@ -6,7 +6,7 @@ import { useAuth } from 'context/auth-context'
 import { validateEmail, validatePass } from 'utils/authenticationUtils'
 import { authReducer } from 'reducer/authReducer'
 import { Navbar, Footer } from 'components'
-// import { successToast, errorToast } from 'components/toast/toasts'
+import { successToast, errorToast } from 'components/toast/toasts'
 import { useTitle } from 'utils/useTitle'
 
 export function Signup() {
@@ -27,9 +27,9 @@ export function Signup() {
   useEffect(() => {
     if (encodedToken) {
       navigation('/')
-      // successToast('Welcome Back to Notes Banao')
+      successToast('Welcome Back to GamesVid')
     }
-  })
+  }, [])
   const SignUpHandler = async e => {
     e.preventDefault()
     try {
@@ -39,14 +39,14 @@ export function Signup() {
         lastName,
         password,
       })
-      // successToast('You have signed up successfully')
+      successToast('You have signed up successfully')
       localStorage.setItem('token', response.data.encodedToken)
       setUsers(response.data.createdUser)
       response.status === 201 && navigation('/')
     } catch (err) {
       console.log(err)
       setError("Could'nt Sign Up, Please try Again!")
-      // errorToast(error)
+      errorToast(error)
     }
   }
 

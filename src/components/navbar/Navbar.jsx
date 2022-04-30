@@ -1,11 +1,14 @@
 import { useAuth } from 'context'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { successToast } from 'components/toast/toasts'
+
 export function Navbar() {
   const { setEncodedToken } = useAuth
 
   const encodedToken = localStorage.getItem('token')
   const logout = () => {
+    successToast('You have successfully logged out')
     localStorage.removeItem('token')
     setEncodedToken(null)
   }
