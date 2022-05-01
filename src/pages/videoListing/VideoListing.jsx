@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Navbar from 'components/navbar/Navbar'
-import Footer from 'components/footer/Footer'
-import VideoCard from 'components/videocard/VideoCard'
+import { Navbar, Footer, VideoCard } from 'components'
+
 import axios from 'axios'
 export default function VideoListing() {
   const [videos, setVideos] = useState([])

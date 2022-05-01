@@ -1,7 +1,5 @@
 import React from 'react'
-import videoCard from 'assets/images/videoCard.jpg'
-import avatarVideo from 'assets/images/avatarVideo.png'
-export default function VideoCard({ video }) {
+export function VideoCard({ video }) {
   const {
     _id,
     title,

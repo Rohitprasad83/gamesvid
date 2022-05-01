@@ -1,8 +1,6 @@
 import React from 'react'
 import banner from 'assets/images/banner.jpg'
-import Navbar from 'components/navbar/Navbar'
-import Footer from 'components/footer/Footer'
-import VideoCard from 'components/videocard/VideoCard'
+import { Navbar, Footer } from 'components'
 export default function Home() {
   return (
     <div className="home__container">

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function Footer() {
+export function Footer() {
   return (
     <div className="footer text__md">
       <Link to="/" className="footer-item">
