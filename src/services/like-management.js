@@ -24,21 +24,20 @@ const likeVideo = async video => {
     }
 }
 
-const deleteVideo = async(videoId, encodedToken) => {
-    console.log(videoId)
+const deleteVideo = async videoId => {
     if (encodedToken) {
         try {
-            const response = await axios.post(`/api/user/likes/${videoId}`, {
+            const response = await axios.delete(`/api/user/likes/${videoId}`, {
                 headers: {
                     authorization: encodedToken,
                 },
             })
-            console.log(response.data.likes)
+            successToast('Video has been successfully removed from Liked Videos')
         } catch (err) {
-            console.log(err)
+            errorToast('Something went wrong, please try again later!')
         }
     } else {
-        console.log('login first')
+        errorToast('Please login first!')
     }
 }
 

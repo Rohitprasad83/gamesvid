@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 
 import axios from 'axios'
-export default function VideoListing() {
+export function VideoListing() {
   const [videos, setVideos] = useState([])
   useEffect(() => {
     try {
