@@ -3,6 +3,8 @@ import Home from 'pages/home/Home'
 import VideoListing from 'pages/videoListing/VideoListing'
 import { Login } from 'pages/auth/Login'
 import { Signup } from 'pages/auth/Signup'
+import { SingleVideo } from 'pages/singlevideo/SingleVideo'
+
 import { ToastContainerCustom } from 'components/toast/ToastContainer'
 import { Routes, Route } from 'react-router-dom'
 
@@ -12,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/videos" element={<VideoListing />} />
+        <Route path="/videos/:videoId" element={<SingleVideo />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
