@@ -16,13 +16,17 @@ export function VideoCard({ video }) {
   } = video
   return (
     <div className="video-card text__md">
-      <img src={thumbnail} alt={alt} className="video-thumbnail" />
-      <Link to={`/videos/${_id}`} className="video-heading">
+      <Link to={`/videos/${_id}`}>
+        <img src={thumbnail} alt={alt} className="video-thumbnail" />
+      </Link>
+      <div className="video-heading">
         <div className="video-avatar">
           <img src={avatar} alt="avatar for Video" className="video-avatar" />
         </div>
-        <span className="video-title font__bold">{title}</span>
-      </Link>
+        <Link to={`/videos/${_id}`} className="video-title font__bold">
+          {title}
+        </Link>
+      </div>
       <div className="video-channel font__regular text__md">{creator}</div>
       <div className="video-footer">
         <span>{views} views</span>
