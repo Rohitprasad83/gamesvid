@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
+import { likeVideo } from 'services/like-management'
+import { useAuth } from 'context'
 export function SingleVideo() {
   let { videoId } = useParams()
-  const video = videos.find(product => product._id === videoId)
+  const [video, setVideo] = useState({})
+
   const {
     _id,
     title,
@@ -18,6 +21,12 @@ export function SingleVideo() {
     avatar,
     link,
   } = video
+  const { encodedToken } = useAuth()
+
+  useEffect(() => {
+    const video = videos.find(product => product._id === videoId)
+    setVideo(video)
+  }, [videoId])
   return (
     <div className="home__container">
       <Navbar />
@@ -35,7 +44,7 @@ export function SingleVideo() {
             <div className="text__xl font__bold">{title}</div>
             <div className="single-video-details">
               <div className="single-video-icons">
-                <span className="pointer">
+                <span className="pointer" onClick={() => likeVideo(video)}>
                   <i className="fa-regular fa-thumbs-up"></i> Like
                 </span>
                 <span className="pointer">

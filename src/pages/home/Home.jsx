@@ -1,7 +1,7 @@
 import React from 'react'
 import banner from 'assets/images/banner.jpg'
 import { Navbar, Footer } from 'components'
-export default function Home() {
+export function Home() {
   return (
     <div className="home__container">
       <Navbar />
