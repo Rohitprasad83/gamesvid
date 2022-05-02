@@ -27,12 +27,12 @@ export function Footer() {
         </span>
         <span>Liked Videos</span>
       </Link>
-      <div className="footer-item">
+      <Link to="/watch-later" className="footer-item">
         <span>
           <i className="fa-solid fa-clock"></i>
         </span>
         <span>Watch Later</span>
-      </div>
+      </Link>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-clock-rotate-left"></i>
