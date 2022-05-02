@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
-import { likeVideo, addToWatchLater } from 'services'
+import { likeVideo, addToWatchLater, addToHistory } from 'services'
 import { useAuth } from 'context'
 export function SingleVideo() {
   let { videoId } = useParams()
@@ -26,7 +26,9 @@ export function SingleVideo() {
   useEffect(() => {
     const video = videos.find(product => product._id === videoId)
     setVideo(video)
+    addToHistory(video)
   }, [videoId])
+
   return (
     <div className="home__container">
       <Navbar />

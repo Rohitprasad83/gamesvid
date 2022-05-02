@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { deleteVideo, removeFromWatchLater } from 'services'
+import { deleteVideo, removeFromWatchLater, removeFromHistory } from 'services'
 export function VideoCard({ video }) {
   const {
     _id,
@@ -32,6 +32,14 @@ export function VideoCard({ video }) {
           <i
             className="fa-solid fa-trash-can pointer"
             onClick={() => removeFromWatchLater(_id)}></i>
+        </span>
+      )}
+
+      {location.pathname === '/history' && (
+        <span className="trash">
+          <i
+            className="fa-solid fa-trash-can pointer"
+            onClick={() => removeFromHistory(_id)}></i>
         </span>
       )}
       <Link to={`/videos/${_id}`}>
