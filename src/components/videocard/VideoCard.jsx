@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { deleteVideo } from 'services/like-management'
+import { deleteVideo, removeFromWatchLater } from 'services'
 export function VideoCard({ video }) {
   const {
     _id,
@@ -27,6 +27,13 @@ export function VideoCard({ video }) {
         </span>
       )}
 
+      {location.pathname === '/watch-later' && (
+        <span className="trash">
+          <i
+            className="fa-solid fa-trash-can pointer"
+            onClick={() => removeFromWatchLater(_id)}></i>
+        </span>
+      )}
       <Link to={`/videos/${_id}`}>
         <img src={thumbnail} alt={alt} className="video-thumbnail" />
       </Link>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
-import { likeVideo } from 'services/like-management'
+import { likeVideo, addToWatchLater } from 'services'
 import { useAuth } from 'context'
 export function SingleVideo() {
   let { videoId } = useParams()
@@ -50,7 +50,9 @@ export function SingleVideo() {
                 <span className="pointer">
                   <i className="fa-regular fa-thumbs-down"></i>Dislike
                 </span>
-                <span className="pointer">
+                <span
+                  className="pointer"
+                  onClick={() => addToWatchLater(video)}>
                   <i className="fa-regular fa-heart"></i>Add to Watch Later
                 </span>
                 <span className="pointer">
