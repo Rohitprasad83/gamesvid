@@ -33,12 +33,12 @@ export function Footer() {
         </span>
         <span>Watch Later</span>
       </Link>
-      <div className="footer-item">
+      <Link to="/history" className="footer-item">
         <span>
           <i className="fa-solid fa-clock-rotate-left"></i>
         </span>
         <span>History</span>
-      </div>
+      </Link>
     </div>
   )
 }
