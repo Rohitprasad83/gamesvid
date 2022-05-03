@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { deleteVideo } from 'services/like-management'
 export function VideoCard({ video }) {
   const {
     _id,
@@ -14,8 +15,18 @@ export function VideoCard({ video }) {
     avatar,
     link,
   } = video
+
+  let location = useLocation()
   return (
     <div className="video-card text__md">
+      {location.pathname === '/liked-videos' && (
+        <span className="trash">
+          <i
+            className="fa-solid fa-trash-can pointer"
+            onClick={() => deleteVideo(_id)}></i>
+        </span>
+      )}
+
       <Link to={`/videos/${_id}`}>
         <img src={thumbnail} alt={alt} className="video-thumbnail" />
       </Link>

@@ -17,6 +17,7 @@
     grid-area: header;
     height: 8rem;
     background-color: var(--white);
+    z-index: 2;
 }
 
 .footer {
@@ -57,6 +58,7 @@
     padding: 0rem 0.2rem;
     background-color: var(--pure-white);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: relative;
 }
 
 .video-heading {
@@ -218,6 +220,18 @@
     justify-content: center;
     flex-wrap: wrap;
     margin: 2rem auto;
+}
+
+.trash {
+    width: max-content;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    background-color: var(--white);
+    opacity: 0.8;
+    font-size: 2rem;
+    border-radius: 0.5rem;
 }
 
 @media (max-width: 768px) {

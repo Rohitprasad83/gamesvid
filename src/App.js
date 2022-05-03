@@ -1,12 +1,15 @@
 import './App.css'
-import Home from 'pages/home/Home'
-import VideoListing from 'pages/videoListing/VideoListing'
-import { Login } from 'pages/auth/Login'
-import { Signup } from 'pages/auth/Signup'
-import { SingleVideo } from 'pages/singlevideo/SingleVideo'
-
+import {
+  Home,
+  VideoListing,
+  Login,
+  Signup,
+  SingleVideo,
+  LikedVideos,
+} from 'pages'
 import { ToastContainerCustom } from 'components/toast/ToastContainer'
 import { Routes, Route } from 'react-router-dom'
+import Mockman from 'mockman-js'
 
 function App() {
   return (
@@ -17,6 +20,8 @@ function App() {
         <Route path="/videos/:videoId" element={<SingleVideo />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/liked-videos" element={<LikedVideos />} />
+        <Route path="/mock" element={<Mockman />} />
       </Routes>
       <ToastContainerCustom />
     </div>

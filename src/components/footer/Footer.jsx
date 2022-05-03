@@ -21,12 +21,12 @@ export function Footer() {
         </span>
         <span>Playlist</span>
       </div>
-      <div className="footer-item">
+      <Link to="/liked-videos" className="footer-item">
         <span>
           <i className="fa-solid fa-heart"></i>
         </span>
         <span>Liked Videos</span>
-      </div>
+      </Link>
       <div className="footer-item">
         <span>
           <i className="fa-solid fa-clock"></i>
