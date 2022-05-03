@@ -8,6 +8,7 @@ import {
   LikedVideos,
   WatchLater,
   History,
+  Playlist,
 } from 'pages'
 import { ToastContainerCustom } from 'components/toast/ToastContainer'
 import { Routes, Route } from 'react-router-dom'
@@ -25,6 +26,7 @@ function App() {
         <Route path="/liked-videos" element={<LikedVideos />} />
         <Route path="/watch-later" element={<WatchLater />} />
         <Route path="/history" element={<History />} />
+        <Route path="/playlist" element={<Playlist />} />
         <Route path="/mock" element={<Mockman />} />
       </Routes>
       <ToastContainerCustom />
