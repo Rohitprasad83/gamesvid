@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useAuth } from 'context'
 import { Navbar, Footer, VideoCard } from 'components'
 import { errorToast } from 'components/toast/toasts'
-
+import PlaylistCard from './PlaylistCard'
 export function Playlist() {
   const [playlists, setPlaylists] = useState([])
   const { encodedToken } = useAuth()
@@ -11,7 +11,7 @@ export function Playlist() {
   useEffect(() => {
     ;(async () => {
       try {
-        const response = await axios.get(`/api/user/playlistss`, {
+        const response = await axios.get(`/api/user/playlists`, {
           headers: {
             authorization: encodedToken,
           },
@@ -26,7 +26,11 @@ export function Playlist() {
     <div className="home__container">
       <Navbar />
       <div className="main__container">
-        <div className="videos-container"></div>
+        <div className="videos-container">
+          {playlists.map(playlist => (
+            <PlaylistCard playlist={playlist} key={playlist._id} />
+          ))}
+        </div>
       </div>
       <Footer />
     </div>
