@@ -41,7 +41,7 @@ const deletePlaylist = async playlistId => {
     }
 }
 
-const addVideoToPlaylist = async(playlistId, video) => {
+const addVideoToPlaylist = async(playlistId, video, playlistTitle) => {
     if (encodedToken) {
         try {
             const response = await axios.post(
@@ -51,17 +51,18 @@ const addVideoToPlaylist = async(playlistId, video) => {
                     },
                 }
             )
+            successToast(video.title + ' added to the ' + playlistTitle)
         } catch (err) {
-            if (err.response.status === 409)
-                errorToast(video.title + ' already exists in playlist')
-            else errorToast('Something went wrong, Please try again!')
+            if (err.response.status === 409) {
+                deletePlaylistVideo(playlistId, video._id, playlistTitle)
+            } else errorToast('Something went wrong, Please try again!')
             console.log(err)
         }
     } else {
         errorToast('login first')
     }
 }
-const deletePlaylistVideo = async(playlistId, videoId) => {
+const deletePlaylistVideo = async(playlistId, videoId, playlistTitle) => {
     if (encodedToken) {
         try {
             const response = await axios.delete(
@@ -71,7 +72,7 @@ const deletePlaylistVideo = async(playlistId, videoId) => {
                     },
                 }
             )
-            successToast('Video has been deleted from playlist')
+            successToast('Video has been deleted from ' + playlistTitle)
         } catch (err) {
             console.log(err)
             errorToast('Something went wrong, please try again later!')

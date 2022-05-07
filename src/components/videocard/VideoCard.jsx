@@ -5,10 +5,11 @@ import {
   removeFromWatchLater,
   removeFromHistory,
   addPlaylist,
-  deletePlaylist,
   deletePlaylistVideo,
   addVideoToPlaylist,
 } from 'services'
+import { useAuth } from 'context'
+import axios from 'axios'
 export function VideoCard({ video }) {
   const {
     _id,
@@ -37,6 +38,24 @@ export function VideoCard({ video }) {
   //     document.body.style.overflow = 'unset'
   //   }
   // }, [openPlaylist])
+
+  const [playlists, setPlaylists] = useState([])
+  const { encodedToken } = useAuth()
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const response = await axios.get(`/api/user/playlists`, {
+          headers: {
+            authorization: encodedToken,
+          },
+        })
+        setPlaylists(response.data.playlists)
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+  }, [playlists])
 
   return (
     <div className="video-card text__md">
@@ -101,10 +120,23 @@ export function VideoCard({ video }) {
               </span>
             </div>
             <hr />
-            <label htmlFor="playlist1">
-              <input type="checkbox" id="playlist1" />
-              playlist 1
-            </label>
+            {playlists.map(playlist => (
+              <label htmlFor={playlist.title} key={playlist._id}>
+                <input
+                  type="checkbox"
+                  id={playlist.title}
+                  onChange={() =>
+                    addVideoToPlaylist(playlist._id, video, playlist.title)
+                  }
+                  checked={
+                    playlist.videos.some(video => video._id === _id)
+                      ? true
+                      : false
+                  }
+                />
+                {playlist.title}
+              </label>
+            ))}
             {createPlaylist ? (
               <div className="createPlaylist">
                 <input
