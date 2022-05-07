@@ -55,8 +55,10 @@ const addVideoToPlaylist = async(playlistId, video, playlistTitle) => {
         } catch (err) {
             if (err.response.status === 409) {
                 deletePlaylistVideo(playlistId, video._id, playlistTitle)
-            } else errorToast('Something went wrong, Please try again!')
-            console.log(err)
+            } else {
+                errorToast('Something went wrong, Please try again!')
+                console.log(err)
+            }
         }
     } else {
         errorToast('login first')

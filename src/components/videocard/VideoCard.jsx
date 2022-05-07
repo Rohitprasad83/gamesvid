@@ -161,11 +161,9 @@ export function VideoCard({ video }) {
                 </div>
               </div>
             ) : (
-              <button
-                className="btn btn__error__outlined"
-                onClick={() => setCreatePlaylist(true)}>
-                Create Playlist
-              </button>
+              <div className="pointer" onClick={() => setCreatePlaylist(true)}>
+                <i className="fa-solid fa-plus"></i> Create a new playlist
+              </div>
             )}
           </div>
         )}
