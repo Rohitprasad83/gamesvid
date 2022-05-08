@@ -3,11 +3,14 @@ import { useAuth } from 'context'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Navbar, Footer, VideoCard } from 'components'
+import { deletePlaylist } from 'services'
 
 export function SinglePlaylist() {
+  const [playlist, setPlaylist] = useState({})
   const [playlistVideos, setPlaylistVideos] = useState([])
   const { encodedToken } = useAuth()
-  let { playlistId } = useParams()
+  const { playlistId } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     ;(async () => {
@@ -17,17 +20,29 @@ export function SinglePlaylist() {
             authorization: encodedToken,
           },
         })
+        setPlaylist(response.data.playlist)
         setPlaylistVideos(response.data.playlist.videos)
-        console.log(response)
       } catch (error) {
         console.log(error)
       }
     })()
-  }, [playlistId])
+  }, [])
   return (
     <div className="home__container">
       <Navbar />
       <div className="main__container ">
+        <div>
+          <span className="text__xl font__bold">{playlist.title}</span>
+          <button
+            className="btn btn__error__outlined"
+            onClick={() => {
+              deletePlaylist(playlistId)
+              navigate('/playlist')
+            }}>
+            Delete Playlist
+          </button>
+        </div>
+
         <div className="videos-container">
           {playlistVideos.map(video => (
             <VideoCard video={video} key={video._id} />

@@ -31,14 +31,6 @@ export function VideoCard({ video }) {
   const [playlistDescription, setPlaylistDescription] = useState(false)
   let location = useLocation()
 
-  // useEffect(() => {
-  //   if (openPlaylist) {
-  //     document.body.style.overflow = 'hidden'
-  //   } else {
-  //     document.body.style.overflow = 'unset'
-  //   }
-  // }, [openPlaylist])
-
   const [playlists, setPlaylists] = useState([])
   const { encodedToken } = useAuth()
 
