@@ -29,9 +29,10 @@ export function VideoCard({ video }) {
   const [createPlaylist, setCreatePlaylist] = useState(false)
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
-  let location = useLocation()
-
+  const [playlistId, setPlaylistId] = useState('')
   const [playlists, setPlaylists] = useState([])
+
+  const location = useLocation()
   const { encodedToken } = useAuth()
 
   useEffect(() => {
@@ -49,6 +50,13 @@ export function VideoCard({ video }) {
     })()
   }, [playlists])
 
+  useEffect(() => {
+    const path = location.pathname
+    if (path && path.includes('/playlist/')) {
+      setPlaylistId(path.substr(10))
+    }
+  }, [])
+
   return (
     <div className="video-card text__md">
       {location.pathname === '/liked-videos' && (
@@ -64,6 +72,14 @@ export function VideoCard({ video }) {
           <i
             className="fa-solid fa-trash-can pointer"
             onClick={() => removeFromWatchLater(_id)}></i>
+        </span>
+      )}
+
+      {location.pathname.includes('/playlist/') && (
+        <span className="trash">
+          <i
+            className="fa-solid fa-trash-can pointer"
+            onClick={() => deletePlaylistVideo(playlistId, _id, title)}></i>
         </span>
       )}
 
@@ -117,9 +133,10 @@ export function VideoCard({ video }) {
                 <input
                   type="checkbox"
                   id={playlist.title}
-                  onChange={() =>
+                  onChange={() => {
                     addVideoToPlaylist(playlist._id, video, playlist.title)
-                  }
+                    setOpenPlaylist(false)
+                  }}
                   checked={
                     playlist.videos.some(video => video._id === _id)
                       ? true
