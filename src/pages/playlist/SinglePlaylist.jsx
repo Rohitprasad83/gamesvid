@@ -26,7 +26,7 @@ export function SinglePlaylist() {
         console.log(error)
       }
     })()
-  }, [])
+  }, [playlistVideos])
   return (
     <div className="home__container">
       <Navbar />

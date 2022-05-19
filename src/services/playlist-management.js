@@ -74,7 +74,7 @@ const deletePlaylistVideo = async(playlistId, videoId, playlistTitle) => {
                     },
                 }
             )
-            successToast('Video has been deleted from ' + playlistTitle)
+            successToast('Video has been deleted from the playlist')
         } catch (err) {
             console.log(err)
             errorToast('Something went wrong, please try again later!')
