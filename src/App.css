@@ -205,6 +205,7 @@
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    position: relative;
 }
 
 .creator-details {
@@ -244,11 +245,17 @@
     position: absolute;
     gap: 1rem;
     z-index: 3;
-    border: 2px solid black;
     padding: 1rem;
+    border: 2px solid var(--gray);
+    border-radius: 1rem;
     left: 0;
     right: 0;
     background-color: var(--pure-white)
+}
+
+.single-video-icons>.playlist {
+    left: 25rem;
+    top: 3rem;
 }
 
 .playlist-heading {
@@ -327,5 +334,9 @@
         font-size: 1.6rem;
         flex-wrap: wrap;
         gap: 0.5rem;
+    }
+    .single-video-icons>.playlist {
+        left: 2rem;
+        top: 3rem;
     }
 }
