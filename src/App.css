@@ -287,6 +287,26 @@
     padding: 4rem 10rem 2rem 10rem;
 }
 
+.card__shadow {
+    width: 20rem;
+    height: 25rem;
+}
+
+.card__shadow>img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.cateogory-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 5rem;
+    /* gap: 2rem; */
+}
+
 @media (max-width: 768px) {
     .navbar__header {
         font-size: 2.5rem;
