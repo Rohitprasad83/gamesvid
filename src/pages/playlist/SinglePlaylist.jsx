@@ -31,16 +31,19 @@ export function SinglePlaylist() {
     <div className="home__container">
       <Navbar />
       <div className="main__container ">
-        <div>
-          <span className="text__xl font__bold">{playlist.title}</span>
-          <button
-            className="btn btn__error__outlined"
-            onClick={() => {
-              deletePlaylist(playlistId)
-              navigate('/playlist')
-            }}>
-            Delete Playlist
-          </button>
+        <div className="playlist-container-heading">
+          <div className="flex-space-between">
+            <span className="text__xl font__bold">{playlist.title}</span>
+            <button
+              className="btn btn__error__outlined"
+              onClick={() => {
+                deletePlaylist(playlistId)
+                navigate('/playlist')
+              }}>
+              Delete Playlist
+            </button>
+          </div>
+          <div className="text__lg">Description - {playlist.description}</div>
         </div>
 
         <div className="videos-container">
