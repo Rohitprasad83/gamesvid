@@ -13,10 +13,8 @@ const addToHistory = async video => {
                 }
             )
         } catch (err) {
-            if (err.response.status === 409)
-                errorToast(video.title + ' is already present at History Videos')
-            else errorToast('Something went wrong, Please try again!')
-            console.log(err)
+            if (err.response.status !== 409)
+                errorToast('Something went wrong, Please try again!')
         }
     } else {
         errorToast('login first')
