@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   deleteVideo,
+  addToWatchLater,
   removeFromWatchLater,
   removeFromHistory,
   addPlaylist,
@@ -31,7 +32,7 @@ export function VideoCard({ video }) {
   const [playlistDescription, setPlaylistDescription] = useState(false)
   const [playlistId, setPlaylistId] = useState('')
   const [playlists, setPlaylists] = useState([])
-
+  const [watchLaterVideos, setWatchLaterVideos] = useState([])
   const location = useLocation()
   const { encodedToken } = useAuth()
 
@@ -51,12 +52,30 @@ export function VideoCard({ video }) {
   }, [playlists])
 
   useEffect(() => {
+    ;(async () => {
+      try {
+        const response = await axios.get(`/api/user/watchlater`, {
+          headers: {
+            authorization: encodedToken,
+          },
+        })
+        setWatchLaterVideos(response.data.watchlater)
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+  }, [watchLaterVideos])
+
+  useEffect(() => {
     const path = location.pathname
     if (path && path.includes('/playlist/')) {
       setPlaylistId(path.substr(10))
     }
   }, [])
 
+  const containsInWatchLater = video => {
+    return watchLaterVideos.find(({ _id }) => video._id === _id)
+  }
   return (
     <div className="video-card text__md">
       {location.pathname === '/liked-videos' && (
@@ -177,6 +196,23 @@ export function VideoCard({ video }) {
           </div>
         )}
       </div>
+      {containsInWatchLater(video) ? (
+        <button
+          className="btn btn__secondary btn-full"
+          onClick={() => {
+            removeFromWatchLater(_id)
+          }}>
+          Remove From Watch later
+        </button>
+      ) : (
+        <button
+          className="btn btn__secondary btn-full"
+          onClick={() => {
+            addToWatchLater(video)
+          }}>
+          Watch Later
+        </button>
+      )}
     </div>
   )
 }
