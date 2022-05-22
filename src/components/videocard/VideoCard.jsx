@@ -109,7 +109,7 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => removeFromHistory(_id)}></i>
+            onClick={() => removeFromHistory(_id, dispatch)}></i>
         </span>
       )}
       <Link to={`/videos/${_id}`}>

@@ -41,7 +41,7 @@ export function SingleVideo() {
   useEffect(() => {
     const video = videos.find(product => product._id === videoId)
     setVideo(video)
-    addToHistory(video)
+    addToHistory(video, dispatch)
   }, [videoId])
 
   useEffect(() => {

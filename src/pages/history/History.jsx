@@ -4,9 +4,13 @@ import { useAuth } from 'context'
 import { Navbar, Footer, VideoCard } from 'components'
 import { errorToast } from 'components/toast/toasts'
 import { clearAllHistory } from 'services'
+import { useDispatch, useSelector } from 'react-redux'
+
 export function History() {
   const [historyVideo, setHistoryVideo] = useState([])
   const { encodedToken } = useAuth()
+  const dispatch = useDispatch()
+  const videos = useSelector(state => state.historyVideos.videos)
   useEffect(() => {
     ;(async () => {
       try {
@@ -15,12 +19,12 @@ export function History() {
             authorization: encodedToken,
           },
         })
-        setHistoryVideo(response.data.history)
+        setHistoryVideo(videos)
       } catch (error) {
         errorToast('Could not get liked videos')
       }
     })()
-  }, [historyVideo])
+  }, [videos])
   return (
     <div className="home__container">
       <Navbar />
@@ -28,7 +32,7 @@ export function History() {
         <div className="text__center">
           <button
             className="btn btn__error__outlined"
-            onClick={() => clearAllHistory()}>
+            onClick={() => clearAllHistory(dispatch)}>
             Clear All History
           </button>
         </div>
