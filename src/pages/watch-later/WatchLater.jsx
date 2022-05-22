@@ -3,9 +3,14 @@ import axios from 'axios'
 import { useAuth } from 'context'
 import { Navbar, Footer, VideoCard } from 'components'
 import { errorToast } from 'components/toast/toasts'
+import { useSelector } from 'react-redux'
+
 export function WatchLater() {
   const [watchLaterVideos, setWatchLaterVideos] = useState([])
   const { encodedToken } = useAuth()
+
+  const videos = useSelector(state => state.watchLater.videos)
+
   useEffect(() => {
     ;(async () => {
       try {
@@ -14,12 +19,12 @@ export function WatchLater() {
             authorization: encodedToken,
           },
         })
-        setWatchLaterVideos(response.data.watchlater)
+        setWatchLaterVideos(videos)
       } catch (error) {
         errorToast('Could not get liked videos')
       }
     })()
-  }, [watchLaterVideos])
+  }, [videos])
   return (
     <div className="home__container">
       <Navbar />

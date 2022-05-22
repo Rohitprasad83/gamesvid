@@ -93,7 +93,7 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => removeFromWatchLater(_id)}></i>
+            onClick={() => removeFromWatchLater(_id, dispatch)}></i>
         </span>
       )}
 
@@ -203,7 +203,7 @@ export function VideoCard({ video }) {
         <button
           className="btn btn__secondary btn-full"
           onClick={() => {
-            removeFromWatchLater(_id)
+            removeFromWatchLater(_id, dispatch)
           }}>
           Remove From Watch later
         </button>
@@ -211,7 +211,7 @@ export function VideoCard({ video }) {
         <button
           className="btn btn__secondary btn-full"
           onClick={() => {
-            addToWatchLater(video)
+            addToWatchLater(video, dispatch)
           }}>
           Watch Later
         </button>

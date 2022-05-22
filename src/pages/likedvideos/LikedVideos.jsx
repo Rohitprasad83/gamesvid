@@ -22,7 +22,7 @@ export function LikedVideos() {
         errorToast('Could not get liked videos')
       }
     })()
-  }, [likedVideos])
+  }, [videos])
   return (
     <div className="home__container">
       <Navbar />

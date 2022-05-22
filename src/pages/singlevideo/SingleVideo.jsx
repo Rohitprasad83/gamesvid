@@ -85,7 +85,7 @@ export function SingleVideo() {
                 </span>
                 <span
                   className="pointer"
-                  onClick={() => addToWatchLater(video)}>
+                  onClick={() => addToWatchLater(video, dispatch)}>
                   <i className="fa-regular fa-heart"></i>Add to Watch Later
                 </span>
                 <span

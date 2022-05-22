@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { successToast, errorToast } from 'components/toast/toasts'
-
+import {
+    addVideoToWatchLater,
+    deleteVideoFromWatchLater,
+} from 'features/watchlater/watchLaterSlice'
 const encodedToken = localStorage.getItem('token')
-const addToWatchLater = async video => {
+const addToWatchLater = async(video, dispatch) => {
     if (encodedToken) {
         try {
             const response = await axios.post(
@@ -13,6 +16,7 @@ const addToWatchLater = async video => {
                 }
             )
             successToast(video.title + ' added to Watch LaterVideos')
+            dispatch(addVideoToWatchLater(video))
         } catch (err) {
             if (err.response.status === 409)
                 errorToast(video.title + ' is already present at Watch Later Videos')
@@ -24,7 +28,7 @@ const addToWatchLater = async video => {
     }
 }
 
-const removeFromWatchLater = async videoId => {
+const removeFromWatchLater = async(videoId, dispatch) => {
     if (encodedToken) {
         try {
             const response = await axios.delete(`/api/user/watchlater/${videoId}`, {
@@ -33,6 +37,7 @@ const removeFromWatchLater = async videoId => {
                 },
             })
             successToast('Video has been successfully removed from Watch Later')
+            dispatch(deleteVideoFromWatchLater(videoId))
         } catch (err) {
             errorToast('Something went wrong, please try again later!')
         }
