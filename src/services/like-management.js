@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { successToast, errorToast } from 'components/toast/toasts'
+import { likeAVideo, deleteAVideo } from 'features/likedvideos/likedVideosSlice'
 
 const encodedToken = localStorage.getItem('token')
-const likeVideo = async video => {
+const likeVideo = async(video, dispatch) => {
     if (encodedToken) {
         try {
             const response = await axios.post(
@@ -13,6 +14,7 @@ const likeVideo = async video => {
                 }
             )
             successToast(video.title + ' added to Liked Videos')
+            dispatch(likeAVideo(video))
         } catch (err) {
             if (err.response.status === 409)
                 errorToast(video.title + ' is already present at Liked Videos')
@@ -24,7 +26,7 @@ const likeVideo = async video => {
     }
 }
 
-const deleteVideo = async videoId => {
+const deleteVideo = async(videoId, dispatch) => {
     if (encodedToken) {
         try {
             const response = await axios.delete(`/api/user/likes/${videoId}`, {
@@ -33,6 +35,7 @@ const deleteVideo = async videoId => {
                 },
             })
             successToast('Video has been successfully removed from Liked Videos')
+            dispatch(deleteAVideo(videoId))
         } catch (err) {
             errorToast('Something went wrong, please try again later!')
         }

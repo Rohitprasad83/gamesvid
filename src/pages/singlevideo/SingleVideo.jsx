@@ -12,6 +12,7 @@ import {
 } from 'services'
 import { useAuth } from 'context'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 
 export function SingleVideo() {
   let { videoId } = useParams()
@@ -35,6 +36,7 @@ export function SingleVideo() {
     link,
   } = video
   const { encodedToken } = useAuth()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const video = videos.find(product => product._id === videoId)
@@ -73,7 +75,9 @@ export function SingleVideo() {
             <div className="text__xl font__bold">{title}</div>
             <div className="single-video-details">
               <div className="single-video-icons">
-                <span className="pointer" onClick={() => likeVideo(video)}>
+                <span
+                  className="pointer"
+                  onClick={() => likeVideo(video, dispatch)}>
                   <i className="fa-regular fa-thumbs-up"></i> Like
                 </span>
                 <span className="pointer">

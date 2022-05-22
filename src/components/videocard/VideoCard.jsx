@@ -11,6 +11,8 @@ import {
 } from 'services'
 import { useAuth } from 'context'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+
 export function VideoCard({ video }) {
   const {
     _id,
@@ -35,6 +37,7 @@ export function VideoCard({ video }) {
   const [watchLaterVideos, setWatchLaterVideos] = useState([])
   const location = useLocation()
   const { encodedToken } = useAuth()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     ;(async () => {
@@ -82,7 +85,7 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => deleteVideo(_id)}></i>
+            onClick={() => deleteVideo(_id, dispatch)}></i>
         </span>
       )}
 

@@ -3,8 +3,11 @@ import axios from 'axios'
 import { useAuth } from 'context'
 import { Navbar, Footer, VideoCard } from 'components'
 import { errorToast } from 'components/toast/toasts'
+import { useDispatch, useSelector } from 'react-redux'
+
 export function LikedVideos() {
   const [likedVideos, setLikedVideos] = useState([])
+  const videos = useSelector(state => state.likedVideos.videos)
   const { encodedToken } = useAuth()
   useEffect(() => {
     ;(async () => {
@@ -14,7 +17,7 @@ export function LikedVideos() {
             authorization: encodedToken,
           },
         })
-        setLikedVideos(response.data.likes)
+        setLikedVideos(videos)
       } catch (error) {
         errorToast('Could not get liked videos')
       }
