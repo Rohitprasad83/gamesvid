@@ -38,6 +38,7 @@ export function VideoCard({ video }) {
   const location = useLocation()
   const { encodedToken } = useAuth()
   const dispatch = useDispatch()
+  const playlistsInStore = useSelector(state => state.playlist.playlists)
 
   useEffect(() => {
     ;(async () => {
@@ -47,12 +48,12 @@ export function VideoCard({ video }) {
             authorization: encodedToken,
           },
         })
-        setPlaylists(response.data.playlists)
+        setPlaylists(playlistsInStore)
       } catch (error) {
         console.log(error)
       }
     })()
-  }, [playlists])
+  }, [playlistsInStore])
 
   useEffect(() => {
     ;(async () => {
@@ -101,7 +102,9 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => deletePlaylistVideo(playlistId, _id, title)}></i>
+            onClick={() =>
+              deletePlaylistVideo(playlistId, _id, title, dispatch)
+            }></i>
         </span>
       )}
 
@@ -156,7 +159,12 @@ export function VideoCard({ video }) {
                   type="checkbox"
                   id={playlist.title}
                   onChange={() => {
-                    addVideoToPlaylist(playlist._id, video, playlist.title)
+                    addVideoToPlaylist(
+                      playlist._id,
+                      video,
+                      playlist.title,
+                      dispatch
+                    )
                     setOpenPlaylist(false)
                   }}
                   checked={
@@ -185,7 +193,7 @@ export function VideoCard({ video }) {
                 <div
                   className="pointer text__center"
                   onClick={() => {
-                    addPlaylist(playlistTitle, playlistDescription)
+                    addPlaylist(playlistTitle, playlistDescription, dispatch)
                     setCreatePlaylist(false)
                   }}>
                   Create

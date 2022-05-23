@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Navbar, Footer, VideoCard } from 'components'
 import { deletePlaylist } from 'services'
+import { useDispatch, useSelector } from 'react-redux'
 
 export function SinglePlaylist() {
   const [playlist, setPlaylist] = useState({})
@@ -11,6 +12,7 @@ export function SinglePlaylist() {
   const { encodedToken } = useAuth()
   const { playlistId } = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     ;(async () => {
@@ -37,7 +39,7 @@ export function SinglePlaylist() {
             <button
               className="btn btn__error__outlined"
               onClick={() => {
-                deletePlaylist(playlistId)
+                deletePlaylist(playlistId, dispatch)
                 navigate('/playlist')
               }}>
               Delete Playlist

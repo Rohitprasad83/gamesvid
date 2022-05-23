@@ -37,7 +37,7 @@ export function SingleVideo() {
   } = video
   const { encodedToken } = useAuth()
   const dispatch = useDispatch()
-
+  const playlistsInStore = useSelector(state => state.playlist.playlists)
   useEffect(() => {
     const video = videos.find(product => product._id === videoId)
     setVideo(video)
@@ -52,12 +52,12 @@ export function SingleVideo() {
             authorization: encodedToken,
           },
         })
-        setPlaylists(response.data.playlists)
+        setPlaylists(playlistsInStore)
       } catch (error) {
         console.log(error)
       }
     })()
-  }, [playlists])
+  }, [playlistsInStore])
   return (
     <div className="home__container">
       <Navbar />
@@ -116,7 +116,8 @@ export function SingleVideo() {
                             addVideoToPlaylist(
                               playlist._id,
                               video,
-                              playlist.title
+                              playlist.title,
+                              dispatch
                             )
                             setOpenPlaylist(false)
                           }}
@@ -146,7 +147,11 @@ export function SingleVideo() {
                         <div
                           className="pointer text__center"
                           onClick={() => {
-                            addPlaylist(playlistTitle, playlistDescription)
+                            addPlaylist(
+                              playlistTitle,
+                              playlistDescription,
+                              dispatch
+                            )
                             setCreatePlaylist(false)
                           }}>
                           Create
