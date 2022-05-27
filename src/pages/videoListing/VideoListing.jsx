@@ -1,19 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
-
-import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllVideos } from 'features/videos/videosSlice'
 export function VideoListing() {
-  const [videos, setVideos] = useState([])
+  const { videos, loading, error } = useSelector(state => state.videos)
+  const dispatch = useDispatch()
   useEffect(() => {
-    try {
-      ;(async () => {
-        const response = await axios.get('/api/videos')
-        setVideos(response.data.videos)
-      })()
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch(getAllVideos())
   }, [])
+
+  // if (loading) {
+  //   return (
+  //     <div className="home__container">
+  //       <Navbar />
+  //       <h1>Loading...</h1>
+  //       <Footer />
+  //     </div>
+  //   )
+  // }
+
+  // if (error) {
+  //   return (
+  //     <div className="home__container">
+  //       <Navbar />
+  //       <div className="main__container">
+  //         <div className="videos-container">
+  //           <h1>
+  //             Sorry, We could not fetch the videos, please refresh the page!
+  //           </h1>
+  //         </div>
+  //       </div>
+  //       <Footer />
+  //     </div>
+  //   )
+  // }
+
   return (
     <div>
       <div className="home__container">
@@ -28,6 +49,12 @@ export function VideoListing() {
             <span className="category">Strategy</span>
           </div>
           <div className="videos-container">
+            {loading && <h1>Loading...</h1>}
+            {error && (
+              <h2>
+                Sorry, We could not fetch the videos, please refresh the page!
+              </h2>
+            )}
             {videos &&
               videos.map(video => <VideoCard key={video._id} video={video} />)}
           </div>
