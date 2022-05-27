@@ -9,32 +9,6 @@ export function VideoListing() {
     dispatch(getAllVideos())
   }, [])
 
-  // if (loading) {
-  //   return (
-  //     <div className="home__container">
-  //       <Navbar />
-  //       <h1>Loading...</h1>
-  //       <Footer />
-  //     </div>
-  //   )
-  // }
-
-  // if (error) {
-  //   return (
-  //     <div className="home__container">
-  //       <Navbar />
-  //       <div className="main__container">
-  //         <div className="videos-container">
-  //           <h1>
-  //             Sorry, We could not fetch the videos, please refresh the page!
-  //           </h1>
-  //         </div>
-  //       </div>
-  //       <Footer />
-  //     </div>
-  //   )
-  // }
-
   return (
     <div>
       <div className="home__container">

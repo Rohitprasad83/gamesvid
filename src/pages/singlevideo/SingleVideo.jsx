@@ -13,10 +13,13 @@ import {
 import { useAuth } from 'context'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
+import { getVideo } from 'features/videos/videosSlice'
 
 export function SingleVideo() {
   let { videoId } = useParams()
-  const [video, setVideo] = useState({})
+  const { video } = useSelector(state => state.videos)
+  const playlistsInStore = useSelector(state => state.playlist.playlists)
+
   const [playlists, setPlaylists] = useState([])
   const [openPlaylist, setOpenPlaylist] = useState(false)
   const [createPlaylist, setCreatePlaylist] = useState(false)
@@ -35,13 +38,12 @@ export function SingleVideo() {
     avatar,
     link,
   } = video
+
   const { encodedToken } = useAuth()
   const dispatch = useDispatch()
-  const playlistsInStore = useSelector(state => state.playlist.playlists)
+
   useEffect(() => {
-    const video = videos.find(product => product._id === videoId)
-    setVideo(video)
-    addToHistory(video, dispatch)
+    dispatch(getVideo(videoId))
   }, [videoId])
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export function SingleVideo() {
         })
         setPlaylists(playlistsInStore)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     })()
   }, [playlistsInStore])
