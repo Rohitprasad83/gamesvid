@@ -5,6 +5,7 @@ import historyVideosReducer from 'features/historyvideos/historyVideosSlice.js'
 import playlistReducer from 'features/playlist/playlistSlice'
 import videosReducer from 'features/videos/videosSlice'
 import categoriesReducer from 'features/categories/categoriesSlice'
+import authReducer from 'features/auth/authSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
         playlist: playlistReducer,
         videos: videosReducer,
         categories: categoriesReducer,
+        auth: authReducer,
     },
 })

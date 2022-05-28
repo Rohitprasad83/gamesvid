@@ -1,46 +1,28 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import authStyle from './auth.module.css'
-import axios from 'axios'
-import { useAuth } from 'context/auth-context'
 import { Navbar, Footer } from 'components'
-import { successToast, errorToast } from 'components/toast/toasts'
 import { useTitle } from 'utils/useTitle'
 import { validateEmail, validatePass } from 'utils/authenticationUtils'
+import { loginHandler } from 'features/auth/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 export function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigation = useNavigate()
-  const [error, setError] = useState(null)
-  const { setUsers, encodedToken } = useAuth()
   const [showPassword, setShowPassword] = useState('password')
-
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const { encodedToken } = useSelector(state => state.auth)
   useTitle('| Login')
 
   useEffect(() => {
     if (encodedToken) {
-      navigation('/')
-      successToast('Welcome Back to GamesVid')
+      navigation(location.state?.from?.pathname ?? '/', { replace: true })
     }
-  })
-  const loginHandler = async e => {
-    e.preventDefault()
-    if (email && password) {
-      try {
-        const response = await axios.post('/api/auth/login', {
-          email,
-          password,
-        })
-        localStorage.setItem('token', response.data.encodedToken)
-        setUsers(response.data.foundUser)
-        response.status === 200 && navigation('/')
-      } catch (err) {
-        setError("Could'nt Login Up, Please try Again!")
-        errorToast(error)
-      }
-    }
-  }
+  }, [location, encodedToken, navigation])
+
   const fillDummyDetails = e => {
     e.preventDefault()
     setEmail('adarshbalika@gmail.com')
@@ -117,7 +99,7 @@ export function Login() {
           </div>
           <button
             className={`"btn btn__error ${authStyle['login']}`}
-            onClick={loginHandler}
+            onClick={e => dispatch(loginHandler({ e, email, password }))}
             disabled={!allFieldsAreFilled}>
             <i className="fas fa-sign-in-alt login__icon"></i>
             Login
