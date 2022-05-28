@@ -3,7 +3,6 @@ import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
 import {
-  likeVideo,
   addToWatchLater,
   addToHistory,
   addPlaylist,
@@ -14,7 +13,7 @@ import { useAuth } from 'context'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getVideo } from 'features/videos/videosSlice'
-
+import { likeVideo } from 'features/likedvideos/likedVideosSlice'
 export function SingleVideo() {
   let { videoId } = useParams()
   const { video } = useSelector(state => state.videos)
@@ -39,7 +38,7 @@ export function SingleVideo() {
     link,
   } = video
 
-  const { encodedToken } = useAuth()
+  const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -79,7 +78,7 @@ export function SingleVideo() {
               <div className="single-video-icons">
                 <span
                   className="pointer"
-                  onClick={() => likeVideo(video, dispatch)}>
+                  onClick={() => dispatch(likeVideo({ video, encodedToken }))}>
                   <i className="fa-regular fa-thumbs-up"></i> Like
                 </span>
                 <span className="pointer">

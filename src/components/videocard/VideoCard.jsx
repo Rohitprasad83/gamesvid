@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  deleteVideo,
   addToWatchLater,
   removeFromWatchLater,
   removeFromHistory,
@@ -12,7 +11,7 @@ import {
 import { useAuth } from 'context'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { deleteVideo } from 'features/likedvideos/likedVideosSlice'
 export function VideoCard({ video }) {
   const {
     _id,
@@ -36,7 +35,7 @@ export function VideoCard({ video }) {
   const [playlists, setPlaylists] = useState([])
   const [watchLaterVideos, setWatchLaterVideos] = useState([])
   const location = useLocation()
-  const { encodedToken } = useAuth()
+  const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
   const playlistsInStore = useSelector(state => state.playlist.playlists)
 
@@ -86,7 +85,7 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => deleteVideo(_id, dispatch)}></i>
+            onClick={() => dispatch(deleteVideo({ _id, encodedToken }))}></i>
         </span>
       )}
 
