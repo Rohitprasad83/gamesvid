@@ -68,6 +68,4 @@ export const videosSlice = createSlice({
     },
 })
 
-export const { likeAVideo, deleteAVideo } = videosSlice.actions
-
 export default videosSlice.reducer

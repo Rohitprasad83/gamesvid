@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import banner from 'assets/images/banner.jpg'
 import { Navbar, Footer } from 'components'
-import axios from 'axios'
 import { HomePageCard } from './HomePageCard'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllCategories } from 'features/categories/categoriesSlice'
 export function Home() {
-  const [categories, setCategories] = useState([])
+  const { categories, loading, error } = useSelector(state => state.categories)
+  const dispatch = useDispatch()
   useEffect(() => {
-    try {
-      ;(async () => {
-        const response = await axios.get('/api/categories')
-        setCategories(response.data.categories)
-      })()
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch(getAllCategories())
   }, [])
   return (
     <div className="home__container">
@@ -26,6 +21,11 @@ export function Home() {
         />
         <h5 className="text-left home-banner">Categories</h5>
         <div className="cateogory-container">
+          {loading && <h3>Loading</h3>}
+          {error && (
+            <h3>Could not fetch all categories, please refresh the page!</h3>
+          )}
+
           {categories.map(category => (
             <HomePageCard key={category.id} category={category} />
           ))}

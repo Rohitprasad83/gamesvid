@@ -4,6 +4,8 @@ import watchLaterReducer from 'features/watchlater/watchLaterSlice.js'
 import historyVideosReducer from 'features/historyvideos/historyVideosSlice.js'
 import playlistReducer from 'features/playlist/playlistSlice'
 import videosReducer from 'features/videos/videosSlice'
+import categoriesReducer from 'features/categories/categoriesSlice'
+
 export const store = configureStore({
     reducer: {
         likedVideos: likedVideosReducer,
@@ -11,5 +13,6 @@ export const store = configureStore({
         historyVideos: historyVideosReducer,
         playlist: playlistReducer,
         videos: videosReducer,
+        categories: categoriesReducer,
     },
 })
