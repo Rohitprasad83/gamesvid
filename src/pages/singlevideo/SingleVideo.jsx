@@ -3,17 +3,16 @@ import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
 import {
-  addToWatchLater,
   addToHistory,
   addPlaylist,
   deletePlaylistVideo,
   addVideoToPlaylist,
 } from 'services'
-import { useAuth } from 'context'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getVideo } from 'features/videos/videosSlice'
 import { likeVideo } from 'features/likedvideos/likedVideosSlice'
+import { addToWatchLater } from 'features/watchlater/watchLaterSlice'
 export function SingleVideo() {
   let { videoId } = useParams()
   const { video } = useSelector(state => state.videos)
@@ -86,7 +85,9 @@ export function SingleVideo() {
                 </span>
                 <span
                   className="pointer"
-                  onClick={() => addToWatchLater(video, dispatch)}>
+                  onClick={() =>
+                    dispatch(addToWatchLater({ video, encodedToken }))
+                  }>
                   <i className="fa-regular fa-heart"></i>Add to Watch Later
                 </span>
                 <span

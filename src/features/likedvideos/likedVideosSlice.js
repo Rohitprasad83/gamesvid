@@ -8,6 +8,22 @@ const initialState = {
     error: false,
 }
 
+export const getAllLikedVideos = createAsyncThunk(
+    'likes/getAllLikedVideos',
+    async({ encodedToken }, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`/api/user/likes`, {
+                headers: {
+                    authorization: encodedToken,
+                },
+            })
+            return response.data.likes
+        } catch (error) {
+            return rejectWithValue('Could not get liked videos')
+        }
+    }
+)
+
 export const likeVideo = createAsyncThunk(
     'likes/likeVideo',
     async({ video, encodedToken }, { rejectWithValue }) => {
@@ -81,6 +97,19 @@ export const likedVideosSlice = createSlice({
             state.videos = payload
         },
         [deleteVideo.rejected]: (state, { payload }) => {
+            state.loading = false
+            state.error = payload
+        },
+        [getAllLikedVideos.pending]: state => {
+            state.loading = true
+            state.error = false
+        },
+        [getAllLikedVideos.fulfilled]: (state, { payload }) => {
+            state.loading = false
+            state.error = false
+            state.videos = payload
+        },
+        [getAllLikedVideos.rejected]: (state, { payload }) => {
             state.loading = false
             state.error = payload
         },

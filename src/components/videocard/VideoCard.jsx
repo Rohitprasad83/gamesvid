@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  addToWatchLater,
-  removeFromWatchLater,
   removeFromHistory,
   addPlaylist,
   deletePlaylistVideo,
   addVideoToPlaylist,
 } from 'services'
-import { useAuth } from 'context'
+
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteVideo } from 'features/likedvideos/likedVideosSlice'
+import {
+  addToWatchLater,
+  removeFromWatchLater,
+  getAllWatchLaterVideos,
+} from 'features/watchlater/watchLaterSlice'
 export function VideoCard({ video }) {
-  const {
-    _id,
-    title,
-    description,
-    views,
-    creator,
-    duration,
-    thumbnail,
-    alt,
-    category,
-    avatar,
-    link,
-  } = video
+  const { _id, title, views, creator, duration, thumbnail, alt, avatar } = video
 
   const [openPlaylist, setOpenPlaylist] = useState(false)
   const [createPlaylist, setCreatePlaylist] = useState(false)
@@ -33,11 +24,11 @@ export function VideoCard({ video }) {
   const [playlistDescription, setPlaylistDescription] = useState(false)
   const [playlistId, setPlaylistId] = useState('')
   const [playlists, setPlaylists] = useState([])
-  const [watchLaterVideos, setWatchLaterVideos] = useState([])
   const location = useLocation()
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
   const playlistsInStore = useSelector(state => state.playlist.playlists)
+  const watchLaterVideos = useSelector(state => state.watchLater.videos)
 
   useEffect(() => {
     ;(async () => {
@@ -55,19 +46,8 @@ export function VideoCard({ video }) {
   }, [playlistsInStore])
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/watchlater`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setWatchLaterVideos(response.data.watchlater)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [watchLaterVideos])
+    dispatch(getAllWatchLaterVideos({ encodedToken }))
+  }, [])
 
   useEffect(() => {
     const path = location.pathname
@@ -93,7 +73,9 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => removeFromWatchLater(_id, dispatch)}></i>
+            onClick={() => {
+              dispatch(removeFromWatchLater({ _id, encodedToken }))
+            }}></i>
         </span>
       )}
 
@@ -210,7 +192,7 @@ export function VideoCard({ video }) {
         <button
           className="btn btn__secondary btn-full"
           onClick={() => {
-            removeFromWatchLater(_id, dispatch)
+            dispatch(removeFromWatchLater({ _id, encodedToken }))
           }}>
           Remove From Watch later
         </button>
@@ -218,7 +200,7 @@ export function VideoCard({ video }) {
         <button
           className="btn btn__secondary btn-full"
           onClick={() => {
-            addToWatchLater(video, dispatch)
+            dispatch(addToWatchLater({ video, encodedToken }))
           }}>
           Watch Later
         </button>
