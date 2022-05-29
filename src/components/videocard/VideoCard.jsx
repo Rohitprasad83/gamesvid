@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import {
-  removeFromHistory,
-  addPlaylist,
-  deletePlaylistVideo,
-  addVideoToPlaylist,
-} from 'services'
-
+import { addPlaylist, deletePlaylistVideo, addVideoToPlaylist } from 'services'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteVideo } from 'features/likedvideos/likedVideosSlice'
@@ -15,6 +9,8 @@ import {
   removeFromWatchLater,
   getAllWatchLaterVideos,
 } from 'features/watchlater/watchLaterSlice'
+import { removeFromHistory } from 'features/historyvideos/historyVideosSlice'
+
 export function VideoCard({ video }) {
   const { _id, title, views, creator, duration, thumbnail, alt, avatar } = video
 
@@ -93,7 +89,9 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => removeFromHistory(_id, dispatch)}></i>
+            onClick={() =>
+              dispatch(removeFromHistory({ _id, encodedToken }))
+            }></i>
         </span>
       )}
       <Link to={`/videos/${_id}`}>

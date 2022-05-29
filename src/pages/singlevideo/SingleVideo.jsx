@@ -2,17 +2,13 @@ import { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
-import {
-  addToHistory,
-  addPlaylist,
-  deletePlaylistVideo,
-  addVideoToPlaylist,
-} from 'services'
+import { addPlaylist, deletePlaylistVideo, addVideoToPlaylist } from 'services'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getVideo } from 'features/videos/videosSlice'
 import { likeVideo } from 'features/likedvideos/likedVideosSlice'
 import { addToWatchLater } from 'features/watchlater/watchLaterSlice'
+import { addToHistory } from 'features/historyvideos/historyVideosSlice'
 export function SingleVideo() {
   let { videoId } = useParams()
   const { video } = useSelector(state => state.videos)
@@ -23,19 +19,8 @@ export function SingleVideo() {
   const [createPlaylist, setCreatePlaylist] = useState(false)
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
-  const {
-    _id,
-    title,
-    description,
-    views,
-    creator,
-    duration,
-    thumbnail,
-    alt,
-    category,
-    avatar,
-    link,
-  } = video
+  const { _id, title, description, views, creator, duration, avatar, link } =
+    video
 
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
@@ -43,6 +28,10 @@ export function SingleVideo() {
   useEffect(() => {
     dispatch(getVideo(videoId))
   }, [videoId])
+
+  useEffect(() => {
+    dispatch(addToHistory({ video, encodedToken }))
+  }, [video, videoId])
 
   useEffect(() => {
     ;(async () => {
@@ -53,9 +42,7 @@ export function SingleVideo() {
           },
         })
         setPlaylists(playlistsInStore)
-      } catch (error) {
-        // console.log(error)
-      }
+      } catch (error) {}
     })()
   }, [playlistsInStore])
   return (

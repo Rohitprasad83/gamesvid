@@ -1,23 +1,23 @@
 import axios from 'axios'
 import { successToast, errorToast } from 'components/toast/toasts'
-import {
-    addVideoToHistory,
-    deleteVideoFromHistory,
-    deleteAllVideos,
-} from 'features/historyvideos/historyVideosSlice'
+// import {
+//     addVideoToHistory,
+//     deleteVideoFromHistory,
+//     deleteAllVideos,
+// } from 'features/historyvideos/historyVideosSlice'
 
 const encodedToken = localStorage.getItem('token')
 const addToHistory = async(video, dispatch) => {
     if (encodedToken && video._id !== undefined) {
         try {
             const response = await axios.post(
-                `/api/user/history`, { video }, {
-                    headers: {
-                        authorization: encodedToken,
-                    },
-                }
-            )
-            dispatch(addVideoToHistory(video))
+                    `/api/user/history`, { video }, {
+                        headers: {
+                            authorization: encodedToken,
+                        },
+                    }
+                )
+                // dispatch(addVideoToHistory(video))
         } catch (err) {
             if (err.response.status !== 409)
                 errorToast('Something went wrong, Please try again!')
@@ -36,7 +36,7 @@ const removeFromHistory = async(videoId, dispatch) => {
                 },
             })
             successToast('Video has been successfully removed from History')
-            dispatch(deleteVideoFromHistory(videoId))
+                // dispatch(deleteVideoFromHistory(videoId))
         } catch (err) {
             errorToast('Something went wrong, please try again later!')
         }
@@ -54,7 +54,7 @@ const clearAllHistory = async dispatch => {
                 },
             })
             successToast('History has been cleared successfully!')
-            dispatch(deleteAllVideos())
+                // dispatch(deleteAllVideos())
         } catch (err) {
             console.log(err)
             errorToast('Something went wrong, please try again later!')
