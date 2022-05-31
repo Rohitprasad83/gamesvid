@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { addPlaylist, deletePlaylistVideo, addVideoToPlaylist } from 'services'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteVideo } from 'features/likedvideos/likedVideosSlice'
 import {
@@ -10,6 +8,12 @@ import {
   getAllWatchLaterVideos,
 } from 'features/watchlater/watchLaterSlice'
 import { removeFromHistory } from 'features/historyvideos/historyVideosSlice'
+import {
+  getAllPlaylists,
+  addPlaylist,
+  deletePlaylistVideo,
+  addVideoToPlaylist,
+} from 'features/playlist/playlistSlice'
 
 export function VideoCard({ video }) {
   const { _id, title, views, creator, duration, thumbnail, alt, avatar } = video
@@ -19,27 +23,15 @@ export function VideoCard({ video }) {
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
   const [playlistId, setPlaylistId] = useState('')
-  const [playlists, setPlaylists] = useState([])
   const location = useLocation()
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
-  const playlistsInStore = useSelector(state => state.playlist.playlists)
+  const playlists = useSelector(state => state.playlist.playlists)
   const watchLaterVideos = useSelector(state => state.watchLater.videos)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/playlists`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setPlaylists(playlistsInStore)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [playlistsInStore])
+    dispatch(getAllPlaylists({ encodedToken }))
+  }, [])
 
   useEffect(() => {
     dispatch(getAllWatchLaterVideos({ encodedToken }))
@@ -54,6 +46,10 @@ export function VideoCard({ video }) {
 
   const containsInWatchLater = video => {
     return watchLaterVideos.find(({ _id }) => video._id === _id)
+  }
+
+  const containsInPlaylist = (video, playlist) => {
+    return playlist.videos.find(v => v._id === video._id)
   }
   return (
     <div className="video-card text__md">
@@ -80,7 +76,7 @@ export function VideoCard({ video }) {
           <i
             className="fa-solid fa-trash-can pointer"
             onClick={() =>
-              deletePlaylistVideo(playlistId, _id, title, dispatch)
+              dispatch(deletePlaylistVideo({ playlistId, _id, encodedToken }))
             }></i>
         </span>
       )}
@@ -116,7 +112,10 @@ export function VideoCard({ video }) {
         <span>
           <i
             className="fa-solid fa-bars video-option"
-            onClick={() => setOpenPlaylist(!openPlaylist)}></i>
+            onClick={() => {
+              setOpenPlaylist(!openPlaylist)
+              dispatch(getAllPlaylists({ encodedToken }))
+            }}></i>
         </span>
         {openPlaylist && (
           <div className="playlist">
@@ -138,19 +137,17 @@ export function VideoCard({ video }) {
                   type="checkbox"
                   id={playlist.title}
                   onChange={() => {
-                    addVideoToPlaylist(
-                      playlist._id,
-                      video,
-                      playlist.title,
-                      dispatch
+                    dispatch(
+                      addVideoToPlaylist({
+                        playlist,
+                        video,
+                        encodedToken,
+                      })
                     )
+                    dispatch(getAllPlaylists({ encodedToken }))
                     setOpenPlaylist(false)
                   }}
-                  checked={
-                    playlist.videos.some(video => video._id === _id)
-                      ? true
-                      : false
-                  }
+                  checked={containsInPlaylist(video, playlist)}
                 />
                 {playlist.title}
               </label>
@@ -172,7 +169,13 @@ export function VideoCard({ video }) {
                 <div
                   className="pointer text__center"
                   onClick={() => {
-                    addPlaylist(playlistTitle, playlistDescription, dispatch)
+                    dispatch(
+                      addPlaylist({
+                        playlistTitle,
+                        playlistDescription,
+                        encodedToken,
+                      })
+                    )
                     setCreatePlaylist(false)
                   }}>
                   Create

@@ -58,7 +58,6 @@ export const removeFromWatchLater = createAsyncThunk(
     async({ _id, encodedToken }, { rejectWithValue }) => {
         if (encodedToken) {
             try {
-                console.log(_id)
                 const response = await axios.delete(`/api/user/watchlater/${_id}`, {
                     headers: {
                         authorization: encodedToken,
