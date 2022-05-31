@@ -4,6 +4,8 @@ import { successToast, errorToast } from 'components/toast/toasts'
 
 const initialState = {
     videos: [],
+    loading: false,
+    error: false,
 }
 
 export const getAllHistoryVideos = createAsyncThunk(
@@ -36,9 +38,14 @@ export const addToHistory = createAsyncThunk(
                 )
                 return response.data.history
             } catch (err) {
-                if (err.response.status !== 409)
-                    rejectWithValue('Something went wrong, Please try again!')
+                if (err.response.status === 409) {
+                    return rejectWithValue()
+                } else {
+                    return rejectWithValue('Something went wrong, Please try again!')
+                }
             }
+        } else {
+            return rejectWithValue()
         }
     }
 )
@@ -114,7 +121,6 @@ export const historyVideosSlice = createSlice({
         },
         [addToHistory.rejected]: (state, { payload }) => {
             state.error = true
-            state.loading = false
         },
         [removeFromHistory.pending]: state => {
             state.loading = true
