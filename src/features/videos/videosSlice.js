@@ -35,7 +35,13 @@ export const getVideo = createAsyncThunk(
 export const videosSlice = createSlice({
     name: 'videos',
     initialState,
-    reducers: {},
+    reducers: {
+        searchVideo: (state, action) => {
+            state.video = state.videos.filter(video =>
+                video.title.includes(action.payload)
+            )
+        },
+    },
     extraReducers: {
         [getAllVideos.pending]: state => {
             state.loading = true
@@ -67,5 +73,7 @@ export const videosSlice = createSlice({
         },
     },
 })
+
+export const { searchVideo } = videosSlice.actions
 
 export default videosSlice.reducer

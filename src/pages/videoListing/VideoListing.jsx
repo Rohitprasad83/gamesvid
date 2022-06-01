@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllVideos } from 'features/videos/videosSlice'
+import { getAllVideos, searchVideo } from 'features/videos/videosSlice'
 import {
   getCategory,
   getAllCategories,
   allVideos,
 } from 'features/categories/categoriesSlice'
+
 export function VideoListing() {
   const { videos, loading, error } = useSelector(state => state.videos)
   const { categories, category } = useSelector(state => state.categories)
+  // const [search, setSearch] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -17,19 +19,36 @@ export function VideoListing() {
     dispatch(getAllCategories())
   }, [])
 
+  function debounce(func, timeout = 1000) {
+    let timer
+    return (...args) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        func(...args)
+      }, timeout)
+    }
+  }
+
+  const filterByTitle = debounce(search => {
+    dispatch(searchVideo(search))
+  }, 1000)
+
   return (
     <div>
       <div className="home__container">
         <Navbar />
         <div className="main__container">
           <div className="video-categories text__center text__lg">
-            <span
+            <div>
+              <input type="text" onKeyUp={e => filterByTitle(e.target.value)} />
+            </div>
+            <div
               className={
                 'category ' + (category === 'All' ? 'category-active' : '')
               }
               onClick={() => dispatch(allVideos())}>
               All
-            </span>
+            </div>
 
             {categories.map(({ categoryName, _id }) => (
               <span
