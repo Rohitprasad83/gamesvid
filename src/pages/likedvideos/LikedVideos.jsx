@@ -1,31 +1,22 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useAuth } from 'context'
+import { useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
-import { errorToast } from 'components/toast/toasts'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllLikedVideos } from 'features/likedvideos/likedVideosSlice'
 export function LikedVideos() {
-  const [likedVideos, setLikedVideos] = useState([])
-  const { encodedToken } = useAuth()
+  const videos = useSelector(state => state.likedVideos.videos)
+  const dispatch = useDispatch()
+  const encodedToken = localStorage.getItem('token')
+
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/likes`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setLikedVideos(response.data.likes)
-      } catch (error) {
-        errorToast('Could not get liked videos')
-      }
-    })()
-  }, [likedVideos])
+    dispatch(getAllLikedVideos({ encodedToken }))
+  }, [])
+
   return (
     <div className="home__container">
       <Navbar />
       <div className="main__container">
         <div className="videos-container">
-          {likedVideos.map(video => (
+          {videos.map(video => (
             <VideoCard video={video} key={video._id} />
           ))}
         </div>

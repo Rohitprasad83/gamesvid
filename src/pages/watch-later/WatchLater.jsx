@@ -1,25 +1,14 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useAuth } from 'context'
 import { Navbar, Footer, VideoCard } from 'components'
-import { errorToast } from 'components/toast/toasts'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllWatchLaterVideos } from 'features/watchlater/watchLaterSlice'
 export function WatchLater() {
-  const [watchLaterVideos, setWatchLaterVideos] = useState([])
-  const { encodedToken } = useAuth()
+  const dispatch = useDispatch()
+  const watchLaterVideos = useSelector(state => state.watchLater.videos)
+  const encodedToken = localStorage.getItem('token')
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/watchlater`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setWatchLaterVideos(response.data.watchlater)
-      } catch (error) {
-        errorToast('Could not get liked videos')
-      }
-    })()
-  }, [watchLaterVideos])
+    dispatch(getAllWatchLaterVideos({ encodedToken }))
+  }, [])
   return (
     <div className="home__container">
       <Navbar />

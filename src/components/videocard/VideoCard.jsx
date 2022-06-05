@@ -1,54 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteVideo } from 'features/likedvideos/likedVideosSlice'
 import {
-  deleteVideo,
+  addToWatchLater,
   removeFromWatchLater,
-  removeFromHistory,
+  getAllWatchLaterVideos,
+} from 'features/watchlater/watchLaterSlice'
+import { removeFromHistory } from 'features/historyvideos/historyVideosSlice'
+import {
+  getAllPlaylists,
   addPlaylist,
   deletePlaylistVideo,
   addVideoToPlaylist,
-} from 'services'
-import { useAuth } from 'context'
-import axios from 'axios'
+} from 'features/playlist/playlistSlice'
+
 export function VideoCard({ video }) {
-  const {
-    _id,
-    title,
-    description,
-    views,
-    creator,
-    duration,
-    thumbnail,
-    alt,
-    category,
-    avatar,
-    link,
-  } = video
+  const { _id, title, views, creator, duration, thumbnail, alt, avatar } = video
 
   const [openPlaylist, setOpenPlaylist] = useState(false)
   const [createPlaylist, setCreatePlaylist] = useState(false)
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
   const [playlistId, setPlaylistId] = useState('')
-  const [playlists, setPlaylists] = useState([])
-
   const location = useLocation()
-  const { encodedToken } = useAuth()
+  const encodedToken = localStorage.getItem('token')
+  const dispatch = useDispatch()
+  const playlists = useSelector(state => state.playlist.playlists)
+  const watchLaterVideos = useSelector(state => state.watchLater.videos)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/playlists`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setPlaylists(response.data.playlists)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [playlists])
+    dispatch(getAllPlaylists({ encodedToken }))
+  }, [])
+
+  useEffect(() => {
+    dispatch(getAllWatchLaterVideos({ encodedToken }))
+  }, [])
 
   useEffect(() => {
     const path = location.pathname
@@ -57,13 +44,20 @@ export function VideoCard({ video }) {
     }
   }, [])
 
+  const containsInWatchLater = video => {
+    return watchLaterVideos.find(({ _id }) => video._id === _id)
+  }
+
+  const containsInPlaylist = (video, playlist) => {
+    return playlist.videos.find(v => v._id === video._id)
+  }
   return (
     <div className="video-card text__md">
       {location.pathname === '/liked-videos' && (
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => deleteVideo(_id)}></i>
+            onClick={() => dispatch(deleteVideo({ _id, encodedToken }))}></i>
         </span>
       )}
 
@@ -71,7 +65,9 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => removeFromWatchLater(_id)}></i>
+            onClick={() => {
+              dispatch(removeFromWatchLater({ _id, encodedToken }))
+            }}></i>
         </span>
       )}
 
@@ -79,7 +75,9 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => deletePlaylistVideo(playlistId, _id, title)}></i>
+            onClick={() =>
+              dispatch(deletePlaylistVideo({ playlistId, _id, encodedToken }))
+            }></i>
         </span>
       )}
 
@@ -87,7 +85,9 @@ export function VideoCard({ video }) {
         <span className="trash">
           <i
             className="fa-solid fa-trash-can pointer"
-            onClick={() => removeFromHistory(_id)}></i>
+            onClick={() =>
+              dispatch(removeFromHistory({ _id, encodedToken }))
+            }></i>
         </span>
       )}
       <Link to={`/videos/${_id}`}>
@@ -112,7 +112,10 @@ export function VideoCard({ video }) {
         <span>
           <i
             className="fa-solid fa-bars video-option"
-            onClick={() => setOpenPlaylist(!openPlaylist)}></i>
+            onClick={() => {
+              setOpenPlaylist(!openPlaylist)
+              dispatch(getAllPlaylists({ encodedToken }))
+            }}></i>
         </span>
         {openPlaylist && (
           <div className="playlist">
@@ -134,14 +137,17 @@ export function VideoCard({ video }) {
                   type="checkbox"
                   id={playlist.title}
                   onChange={() => {
-                    addVideoToPlaylist(playlist._id, video, playlist.title)
+                    dispatch(
+                      addVideoToPlaylist({
+                        playlist,
+                        video,
+                        encodedToken,
+                      })
+                    )
+                    dispatch(getAllPlaylists({ encodedToken }))
                     setOpenPlaylist(false)
                   }}
-                  checked={
-                    playlist.videos.some(video => video._id === _id)
-                      ? true
-                      : false
-                  }
+                  checked={containsInPlaylist(video, playlist)}
                 />
                 {playlist.title}
               </label>
@@ -163,7 +169,13 @@ export function VideoCard({ video }) {
                 <div
                   className="pointer text__center"
                   onClick={() => {
-                    addPlaylist(playlistTitle, playlistDescription)
+                    dispatch(
+                      addPlaylist({
+                        playlistTitle,
+                        playlistDescription,
+                        encodedToken,
+                      })
+                    )
                     setCreatePlaylist(false)
                   }}>
                   Create
@@ -177,6 +189,23 @@ export function VideoCard({ video }) {
           </div>
         )}
       </div>
+      {containsInWatchLater(video) ? (
+        <button
+          className="btn btn__secondary btn-full"
+          onClick={() => {
+            dispatch(removeFromWatchLater({ _id, encodedToken }))
+          }}>
+          Remove From Watch later
+        </button>
+      ) : (
+        <button
+          className="btn btn__secondary btn-full"
+          onClick={() => {
+            dispatch(addToWatchLater({ video, encodedToken }))
+          }}>
+          Watch Later
+        </button>
+      )}
     </div>
   )
 }

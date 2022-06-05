@@ -2,60 +2,49 @@ import { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
+// import { addPlaylist, deletePlaylistVideo, addVideoToPlaylist } from 'services'
+// import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { getVideo } from 'features/videos/videosSlice'
+import { likeVideo } from 'features/likedvideos/likedVideosSlice'
+import { addToWatchLater } from 'features/watchlater/watchLaterSlice'
+import { addToHistory } from 'features/historyvideos/historyVideosSlice'
 import {
-  likeVideo,
-  addToWatchLater,
-  addToHistory,
+  getAllPlaylists,
   addPlaylist,
   deletePlaylistVideo,
   addVideoToPlaylist,
-} from 'services'
-import { useAuth } from 'context'
-import axios from 'axios'
-
+} from 'features/playlist/playlistSlice'
 export function SingleVideo() {
   let { videoId } = useParams()
-  const [video, setVideo] = useState({})
-  const [playlists, setPlaylists] = useState([])
+  const { video } = useSelector(state => state.videos)
+  const playlists = useSelector(state => state.playlist.playlists)
+
   const [openPlaylist, setOpenPlaylist] = useState(false)
   const [createPlaylist, setCreatePlaylist] = useState(false)
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
-  const {
-    _id,
-    title,
-    description,
-    views,
-    creator,
-    duration,
-    thumbnail,
-    alt,
-    category,
-    avatar,
-    link,
-  } = video
-  const { encodedToken } = useAuth()
+  const { _id, title, description, views, creator, duration, avatar, link } =
+    video
+
+  const encodedToken = localStorage.getItem('token')
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const video = videos.find(product => product._id === videoId)
-    setVideo(video)
-    addToHistory(video)
+    dispatch(getVideo(videoId))
   }, [videoId])
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/playlists`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setPlaylists(response.data.playlists)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [playlists])
+    dispatch(addToHistory({ video, encodedToken }))
+  }, [video, videoId])
+
+  useEffect(() => {
+    dispatch(getAllPlaylists({ encodedToken }))
+  }, [])
+
+  const containsInPlaylist = (video, playlist) => {
+    return playlist.videos.find(v => v._id === video._id)
+  }
   return (
     <div className="home__container">
       <Navbar />
@@ -73,7 +62,9 @@ export function SingleVideo() {
             <div className="text__xl font__bold">{title}</div>
             <div className="single-video-details">
               <div className="single-video-icons">
-                <span className="pointer" onClick={() => likeVideo(video)}>
+                <span
+                  className="pointer"
+                  onClick={() => dispatch(likeVideo({ video, encodedToken }))}>
                   <i className="fa-regular fa-thumbs-up"></i> Like
                 </span>
                 <span className="pointer">
@@ -81,7 +72,9 @@ export function SingleVideo() {
                 </span>
                 <span
                   className="pointer"
-                  onClick={() => addToWatchLater(video)}>
+                  onClick={() =>
+                    dispatch(addToWatchLater({ video, encodedToken }))
+                  }>
                   <i className="fa-regular fa-heart"></i>Add to Watch Later
                 </span>
                 <span
@@ -109,18 +102,17 @@ export function SingleVideo() {
                           type="checkbox"
                           id={playlist.title}
                           onChange={() => {
-                            addVideoToPlaylist(
-                              playlist._id,
-                              video,
-                              playlist.title
+                            dispatch(
+                              addVideoToPlaylist({
+                                playlist,
+                                video,
+                                encodedToken,
+                              })
                             )
+                            dispatch(getAllPlaylists({ encodedToken }))
                             setOpenPlaylist(false)
                           }}
-                          checked={
-                            playlist.videos.some(video => video._id === _id)
-                              ? true
-                              : false
-                          }
+                          checked={containsInPlaylist(video, playlist)}
                         />
                         {playlist.title}
                       </label>
@@ -142,7 +134,13 @@ export function SingleVideo() {
                         <div
                           className="pointer text__center"
                           onClick={() => {
-                            addPlaylist(playlistTitle, playlistDescription)
+                            dispatch(
+                              addPlaylist({
+                                playlistTitle,
+                                playlistDescription,
+                                encodedToken,
+                              })
+                            )
                             setCreatePlaylist(false)
                           }}>
                           Create

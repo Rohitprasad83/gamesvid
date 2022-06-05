@@ -1,27 +1,19 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useEffect } from 'react'
 import { useAuth } from 'context'
-import { Navbar, Footer, VideoCard } from 'components'
-import { errorToast } from 'components/toast/toasts'
+import { Navbar, Footer } from 'components'
 import PlaylistCard from './PlaylistCard'
+import { getAllPlaylists } from 'features/playlist/playlistSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
 export function Playlist() {
-  const [playlists, setPlaylists] = useState([])
   const { encodedToken } = useAuth()
+  const dispatch = useDispatch()
+  const playlists = useSelector(state => state.playlist.playlists)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/playlists`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setPlaylists(response.data.playlists)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [playlists])
+    dispatch(getAllPlaylists({ encodedToken }))
+  }, [])
+
   return (
     <div className="home__container">
       <Navbar />

@@ -1,13 +1,12 @@
 import { useReducer, useState, useEffect } from 'react'
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import authStyle from './auth.module.css'
-import { useAuth } from 'context/auth-context'
 import { validateEmail, validatePass } from 'utils/authenticationUtils'
 import { authReducer } from 'reducer/authReducer'
 import { Navbar, Footer } from 'components'
-import { successToast, errorToast } from 'components/toast/toasts'
 import { useTitle } from 'utils/useTitle'
+import { signUpHandler } from 'features/auth/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 export function Signup() {
   const [userState, userDispatch] = useReducer(authReducer, {
@@ -17,38 +16,20 @@ export function Signup() {
     password: '',
     confirmPassword: '',
   })
-  const [error, setError] = useState(null)
   const [showPassword, setShowPassword] = useState('password')
   const navigation = useNavigate()
   const { email, firstName, lastName, password, confirmPassword } = userState
-  const { setUsers, encodedToken } = useAuth()
+  const { encodedToken } = useSelector(state => state.auth)
+  const location = useLocation()
+  const dispatch = useDispatch()
 
   useTitle('| SignUp')
+
   useEffect(() => {
     if (encodedToken) {
-      navigation('/')
-      successToast('Welcome Back to GamesVid')
+      navigation(location.state?.from?.pathname ?? '/', { replace: true })
     }
-  }, [])
-  const SignUpHandler = async e => {
-    e.preventDefault()
-    try {
-      const response = await axios.post('/api/auth/signup', {
-        email,
-        firstName,
-        lastName,
-        password,
-      })
-      successToast('You have signed up successfully')
-      localStorage.setItem('token', response.data.encodedToken)
-      setUsers(response.data.createdUser)
-      response.status === 201 && navigation('/')
-    } catch (err) {
-      console.log(err)
-      setError("Could'nt Sign Up, Please try Again!")
-      errorToast(error)
-    }
-  }
+  }, [location, encodedToken, navigation])
 
   const showPasswordHandler = () => {
     return setShowPassword(showPassword === 'password' ? 'text' : 'password')
@@ -69,7 +50,9 @@ export function Signup() {
       <Navbar />
       <div className="main__container">
         <form
-          onSubmit={SignUpHandler}
+          onSubmit={e =>
+            dispatch(signUpHandler({ e, firstName, lastName, email, password }))
+          }
           className={`form__group ${authStyle['form__group']}`}>
           <h4 className={authStyle['heading']}>Sign up</h4>
           <div className="form__name">

@@ -1,3 +1,4 @@
+import React from 'react'
 import './App.css'
 import {
   Home,
@@ -10,10 +11,12 @@ import {
   History,
   Playlist,
   SinglePlaylist,
+  NotFound,
 } from 'pages'
 import { ToastContainerCustom } from 'components/toast/ToastContainer'
 import { Routes, Route } from 'react-router-dom'
 import Mockman from 'mockman-js'
+import { PrivateRoute } from 'components'
 
 function App() {
   return (
@@ -24,12 +27,15 @@ function App() {
         <Route path="/videos/:videoId" element={<SingleVideo />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/liked-videos" element={<LikedVideos />} />
-        <Route path="/watch-later" element={<WatchLater />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/playlist" element={<Playlist />} />
-        <Route path="/playlist/:playlistId" element={<SinglePlaylist />} />
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="/liked-videos" element={<LikedVideos />} />
+          <Route path="/watch-later" element={<WatchLater />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/playlist" element={<Playlist />} />
+          <Route path="/playlist/:playlistId" element={<SinglePlaylist />} />
+        </Route>
         <Route path="/mock" element={<Mockman />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainerCustom />
     </div>

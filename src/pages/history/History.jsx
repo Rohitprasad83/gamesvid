@@ -1,26 +1,19 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useAuth } from 'context'
+import { useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
-import { errorToast } from 'components/toast/toasts'
-import { clearAllHistory } from 'services'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  clearAllHistory,
+  getAllHistoryVideos,
+} from 'features/historyvideos/historyVideosSlice'
+
 export function History() {
-  const [historyVideo, setHistoryVideo] = useState([])
-  const { encodedToken } = useAuth()
+  const encodedToken = localStorage.getItem('token')
+  const dispatch = useDispatch()
+  const historyVideos = useSelector(state => state.historyVideos.videos)
   useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await axios.get(`/api/user/history`, {
-          headers: {
-            authorization: encodedToken,
-          },
-        })
-        setHistoryVideo(response.data.history)
-      } catch (error) {
-        errorToast('Could not get liked videos')
-      }
-    })()
-  }, [historyVideo])
+    dispatch(getAllHistoryVideos({ encodedToken }))
+  }, [])
+
   return (
     <div className="home__container">
       <Navbar />
@@ -28,12 +21,12 @@ export function History() {
         <div className="text__center">
           <button
             className="btn btn__error__outlined"
-            onClick={() => clearAllHistory()}>
+            onClick={() => dispatch(clearAllHistory({ encodedToken }))}>
             Clear All History
           </button>
         </div>
         <div className="videos-container">
-          {historyVideo.map(video => (
+          {historyVideos.map(video => (
             <VideoCard video={video} key={video._id} />
           ))}
         </div>
