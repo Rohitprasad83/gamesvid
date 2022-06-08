@@ -25,8 +25,8 @@ export function Login() {
 
   const fillDummyDetails = e => {
     e.preventDefault()
-    setEmail('adarshbalika@gmail.com')
-    setPassword('adarshBalika123')
+    setEmail('rohit.prasad@gmail.com')
+    setPassword('rohit12345')
   }
 
   const allFieldsAreFilled = email !== '' && password !== ''
