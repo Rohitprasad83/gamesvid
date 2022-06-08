@@ -7,7 +7,7 @@ import {
   getAllCategories,
   allVideos,
 } from 'features/categories/categoriesSlice'
-
+import { Ring } from '@uiball/loaders'
 export function VideoListing() {
   const { videos, loading, error, search } = useSelector(state => state.videos)
   const { categories, category } = useSelector(state => state.categories)
@@ -79,7 +79,7 @@ export function VideoListing() {
             ))}
           </div>
           <div className="videos-container">
-            {loading && <h1>Loading...</h1>}
+            {loading && <Ring size={56} speed={2} />}
             {error && (
               <h2>
                 Sorry, We could not fetch the videos, please refresh the page!
@@ -88,10 +88,12 @@ export function VideoListing() {
             {searchVideoBool
               ? search.map(vid => <VideoCard key={vid._id} video={vid} />)
               : category !== 'All'
-              ? videos
+              ? !loading &&
+                videos
                   .filter(video => video.category === category.categoryName)
                   .map(video => <VideoCard key={video._id} video={video} />)
-              : videos.map(video => (
+              : !loading &&
+                videos.map(video => (
                   <VideoCard key={video._id} video={video} />
                 ))}
           </div>

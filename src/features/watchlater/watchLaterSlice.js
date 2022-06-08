@@ -117,6 +117,7 @@ export const watchLaterSlice = createSlice({
         },
         [getAllWatchLaterVideos.rejected]: (state, { payload }) => {
             state.loading = false
+            state.error = true
             state.error = payload
         },
     },

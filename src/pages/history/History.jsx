@@ -5,11 +5,14 @@ import {
   clearAllHistory,
   getAllHistoryVideos,
 } from 'features/historyvideos/historyVideosSlice'
+import { Ring } from '@uiball/loaders'
 
 export function History() {
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
   const historyVideos = useSelector(state => state.historyVideos.videos)
+  const { loading, error } = useSelector(state => state.historyVideos)
+
   useEffect(() => {
     dispatch(getAllHistoryVideos({ encodedToken }))
   }, [])
@@ -26,9 +29,16 @@ export function History() {
           </button>
         </div>
         <div className="videos-container">
-          {historyVideos.map(video => (
-            <VideoCard video={video} key={video._id} />
-          ))}
+          {loading && <Ring size={128} speed={1} />}
+          {error && (
+            <h2>
+              Sorry, We could not fetch the videos, please refresh the page!
+            </h2>
+          )}
+          {!loading &&
+            historyVideos.map(video => (
+              <VideoCard video={video} key={video._id} />
+            ))}
         </div>
       </div>
       <Footer />
