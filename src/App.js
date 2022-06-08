@@ -33,6 +33,7 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/playlist/:playlistId" element={<SinglePlaylist />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/mock" element={<Mockman />} />
         <Route path="*" element={<NotFound />} />
