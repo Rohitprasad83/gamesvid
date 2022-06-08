@@ -44,6 +44,17 @@ export function SinglePlaylist() {
             playlist.videos.map(video => (
               <VideoCard video={video} key={video._id} />
             ))}
+
+          {playlist.videos.length < 1 && (
+            <div className="add-videos">
+              <h4>You haven't added any videos to the playlist</h4>
+              <button
+                className="btn btn__secondary navbar-btn"
+                onClick={() => navigate('/videos')}>
+                Add videos
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <Footer />

@@ -6,12 +6,14 @@ import {
   getAllHistoryVideos,
 } from 'features/historyvideos/historyVideosSlice'
 import { Ring } from '@uiball/loaders'
+import { useNavigate } from 'react-router-dom'
 
 export function History() {
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
   const historyVideos = useSelector(state => state.historyVideos.videos)
   const { loading, error } = useSelector(state => state.historyVideos)
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getAllHistoryVideos({ encodedToken }))
@@ -39,6 +41,17 @@ export function History() {
             historyVideos.map(video => (
               <VideoCard video={video} key={video._id} />
             ))}
+
+          {!loading && historyVideos.length < 1 && (
+            <div className="add-videos">
+              <h4>You haven't watched any videos</h4>
+              <button
+                className="btn btn__secondary navbar-btn"
+                onClick={() => navigate('/videos')}>
+                Watch Videos
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <Footer />
