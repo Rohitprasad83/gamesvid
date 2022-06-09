@@ -4,19 +4,18 @@ import PlaylistCard from './PlaylistCard'
 import { getAllPlaylists } from 'features/playlist/playlistSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Ring } from '@uiball/loaders'
-import { useNavigate } from 'react-router-dom'
-
+import { useTitle } from 'utils/useTitle'
 export function Playlist() {
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
   const playlists = useSelector(state => state.playlist.playlists)
   const { loading, error } = useSelector(state => state.playlist)
-  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getAllPlaylists({ encodedToken }))
   }, [])
 
+  useTitle(' | Playlists')
   return (
     <div className="home__container">
       <Navbar />

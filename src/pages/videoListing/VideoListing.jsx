@@ -8,11 +8,16 @@ import {
   allVideos,
 } from 'features/categories/categoriesSlice'
 import { Ring } from '@uiball/loaders'
+import { useTitle } from 'utils/useTitle'
+
 export function VideoListing() {
   const { videos, loading, error, search } = useSelector(state => state.videos)
   const { categories, category } = useSelector(state => state.categories)
   const dispatch = useDispatch()
   const [searchVideoBool, setSearchVideoBool] = useState(false)
+
+  useTitle('| videos')
+
   useEffect(() => {
     dispatch(getAllVideos())
     dispatch(getAllCategories())

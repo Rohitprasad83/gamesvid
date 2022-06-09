@@ -18,6 +18,8 @@ import {
   addPlaylist,
   addVideoToPlaylist,
 } from 'features/playlist/playlistSlice'
+import { useTitle } from 'utils/useTitle'
+
 export function SingleVideo() {
   let { videoId } = useParams()
   const { video } = useSelector(state => state.videos)
@@ -29,9 +31,10 @@ export function SingleVideo() {
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
   const { title, description, views, creator, duration, avatar, link } = video
-
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
+
+  useTitle(' | Single Video')
 
   useEffect(() => {
     dispatch(getVideo(videoId))

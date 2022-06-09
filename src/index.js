@@ -4,7 +4,6 @@ import App from './App'
 import { makeServer } from './server'
 import { BrowserRouter } from 'react-router-dom'
 import * as ReactDOMClient from 'react-dom/client'
-import { AuthContextProvider } from 'context/index'
 import { store } from 'app/store'
 import { Provider } from 'react-redux'
 // Call make Server
@@ -15,9 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <AuthContextProvider>
-          <App />
-        </AuthContextProvider>
+        <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
