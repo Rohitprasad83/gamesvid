@@ -40,6 +40,9 @@ export const categoriesSlice = createSlice({
         allVideos: state => {
             state.category = 'All'
         },
+        setCategory: (state, action) => {
+            state.category = action.payload
+        },
     },
     extraReducers: {
         [getAllCategories.pending]: state => {
@@ -75,4 +78,4 @@ export const categoriesSlice = createSlice({
 
 export default categoriesSlice.reducer
 
-export const { allVideos } = categoriesSlice.actions
+export const { allVideos, setCategory } = categoriesSlice.actions

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import banner from 'assets/images/banner.jpg'
 import { Navbar, Footer } from 'components'
 import { HomePageCard } from './HomePageCard'
@@ -33,7 +33,7 @@ export function Home() {
 
           {!loading &&
             categories.map(category => (
-              <HomePageCard key={category.id} category={category} />
+              <HomePageCard key={category._id} category={category} />
             ))}
         </div>
       </div>

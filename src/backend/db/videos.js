@@ -12,7 +12,7 @@ export const videos = [{
         duration: '2:49',
         thumbnail: 'https://staticg.sportskeeda.com/editor/2022/01/13e9a-16426623996045-1920.jpg',
         alt: 'Almost Home Trailer',
-        category: 'Strategy',
+        category: 'Adventure',
         avatar: 'https://yt3.ggpht.com/hUdAfgjAm54AGonQSzY52CfkDce84JwBJtOmbxue8vr5Zcv2pFgNBW_yGCGk5ofU0ecnQ4lpuA=s68-c-k-c0x00ffffff-no-rj',
         link: 'https://www.youtube.com/embed/pCjFpGgFZlc',
     },
