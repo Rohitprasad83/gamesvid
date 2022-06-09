@@ -303,7 +303,6 @@
     justify-content: space-around;
     flex-wrap: wrap;
     margin-bottom: 5rem;
-    /* gap: 2rem; */
 }
 
 .btn-full {
@@ -311,6 +310,53 @@
     width: 100%;
     text-align: center;
     border-radius: 0;
+}
+
+.searchVideo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.searchVideo>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30rem;
+    background-color: var(--pure-white);
+    border: 1px solid var(--gray);
+}
+
+.searchVideo>div>i {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.searchVideo>div>input {
+    width: 28rem;
+    height: 4rem;
+    outline: none;
+    padding: 0 1rem 0 1rem;
+    font-size: 2rem;
+}
+
+.fa-magnifying-glass {
+    font-size: 2rem;
+}
+
+.add-videos {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.add-videos>button {
+    width: max-content;
+    padding: 1rem 2rem;
 }
 
 @media (max-width: 768px) {
