@@ -3,12 +3,15 @@ import { Navbar, Footer, VideoCard } from 'components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getAllWatchLaterVideos } from 'features/watchlater/watchLaterSlice'
+import { useTitle } from 'utils/useTitle'
 
 export function WatchLater() {
   const dispatch = useDispatch()
   const { videos } = useSelector(state => state.watchLater)
   const encodedToken = localStorage.getItem('token')
   const navigate = useNavigate()
+
+  useTitle(' | watch later')
 
   useEffect(() => {
     dispatch(getAllWatchLaterVideos({ encodedToken }))

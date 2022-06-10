@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import banner from 'assets/images/banner.jpg'
 import { Navbar, Footer } from 'components'
 import { HomePageCard } from './HomePageCard'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAllCategories } from 'features/categories/categoriesSlice'
 import { Ring } from '@uiball/loaders'
+import { useTitle } from 'utils/useTitle'
 
 export function Home() {
   const { categories, loading, error } = useSelector(state => state.categories)
   const dispatch = useDispatch()
+
+  useTitle('')
   useEffect(() => {
     dispatch(getAllCategories())
   }, [])
@@ -30,7 +33,7 @@ export function Home() {
 
           {!loading &&
             categories.map(category => (
-              <HomePageCard key={category.id} category={category} />
+              <HomePageCard key={category._id} category={category} />
             ))}
         </div>
       </div>

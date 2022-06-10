@@ -7,6 +7,7 @@ import {
 } from 'features/historyvideos/historyVideosSlice'
 import { Ring } from '@uiball/loaders'
 import { useNavigate } from 'react-router-dom'
+import { useTitle } from 'utils/useTitle'
 
 export function History() {
   const encodedToken = localStorage.getItem('token')
@@ -14,6 +15,8 @@ export function History() {
   const historyVideos = useSelector(state => state.historyVideos.videos)
   const { loading, error } = useSelector(state => state.historyVideos)
   const navigate = useNavigate()
+
+  useTitle(' | history')
 
   useEffect(() => {
     dispatch(getAllHistoryVideos({ encodedToken }))

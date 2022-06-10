@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllLikedVideos } from 'features/likedvideos/likedVideosSlice'
 import { Ring } from '@uiball/loaders'
 import { useNavigate } from 'react-router-dom'
-
+import { useTitle } from 'utils/useTitle'
 export function LikedVideos() {
   const { videos, loading, error } = useSelector(state => state.likedVideos)
   const dispatch = useDispatch()
   const encodedToken = localStorage.getItem('token')
   const navigate = useNavigate()
+
+  useTitle(' | Likes')
 
   useEffect(() => {
     dispatch(getAllLikedVideos({ encodedToken }))

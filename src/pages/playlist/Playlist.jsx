@@ -1,23 +1,21 @@
 import { useEffect } from 'react'
-import { useAuth } from 'context'
 import { Navbar, Footer } from 'components'
 import PlaylistCard from './PlaylistCard'
 import { getAllPlaylists } from 'features/playlist/playlistSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Ring } from '@uiball/loaders'
-import { useNavigate } from 'react-router-dom'
-
+import { useTitle } from 'utils/useTitle'
 export function Playlist() {
-  const { encodedToken } = useAuth()
+  const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
   const playlists = useSelector(state => state.playlist.playlists)
   const { loading, error } = useSelector(state => state.playlist)
-  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getAllPlaylists({ encodedToken }))
   }, [])
 
+  useTitle(' | Playlists')
   return (
     <div className="home__container">
       <Navbar />
@@ -30,10 +28,11 @@ export function Playlist() {
             </h2>
           )}
           {!loading &&
+            playlists &&
             playlists.map(playlist => (
               <PlaylistCard playlist={playlist} key={playlist._id} />
             ))}
-          {!loading && playlists.length < 1 && (
+          {!loading && playlists && playlists.length < 1 && (
             <div className="add-videos">
               <h4>You haven't created any playlist</h4>
             </div>

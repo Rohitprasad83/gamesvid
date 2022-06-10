@@ -1,7 +1,10 @@
 import React from 'react'
 import { Navbar, Footer } from 'components'
+import { useTitle } from 'utils/useTitle'
 
 export function NotFound() {
+  useTitle('| 404')
+
   return (
     <div className="home__container">
       <Navbar />

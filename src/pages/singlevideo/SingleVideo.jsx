@@ -1,37 +1,45 @@
 import { useState, useEffect } from 'react'
 import { Navbar, Footer, VideoCard } from 'components'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { videos } from 'backend/db/videos'
-// import { addPlaylist, deletePlaylistVideo, addVideoToPlaylist } from 'services'
-// import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getVideo } from 'features/videos/videosSlice'
-import { likeVideo } from 'features/likedvideos/likedVideosSlice'
-import { addToWatchLater } from 'features/watchlater/watchLaterSlice'
+import {
+  likeVideo,
+  getAllLikedVideos,
+} from 'features/likedvideos/likedVideosSlice'
+import {
+  addToWatchLater,
+  getAllWatchLaterVideos,
+} from 'features/watchlater/watchLaterSlice'
 import { addToHistory } from 'features/historyvideos/historyVideosSlice'
 import {
   getAllPlaylists,
   addPlaylist,
-  deletePlaylistVideo,
   addVideoToPlaylist,
 } from 'features/playlist/playlistSlice'
+import { useTitle } from 'utils/useTitle'
+
 export function SingleVideo() {
   let { videoId } = useParams()
   const { video } = useSelector(state => state.videos)
   const playlists = useSelector(state => state.playlist.playlists)
-
+  const likedVideos = useSelector(state => state.likedVideos.videos)
+  const watchLaterVideos = useSelector(state => state.watchLater.videos)
   const [openPlaylist, setOpenPlaylist] = useState(false)
   const [createPlaylist, setCreatePlaylist] = useState(false)
   const [playlistTitle, setPlaylistTitle] = useState(false)
   const [playlistDescription, setPlaylistDescription] = useState(false)
-  const { _id, title, description, views, creator, duration, avatar, link } =
-    video
-
+  const { title, description, views, creator, duration, avatar, link } = video
   const encodedToken = localStorage.getItem('token')
   const dispatch = useDispatch()
 
+  useTitle(' | Single Video')
+
   useEffect(() => {
     dispatch(getVideo(videoId))
+    dispatch(getAllLikedVideos({ encodedToken }))
+    dispatch(getAllWatchLaterVideos({ encodedToken }))
   }, [videoId])
 
   useEffect(() => {
@@ -62,21 +70,35 @@ export function SingleVideo() {
             <div className="text__xl font__bold">{title}</div>
             <div className="single-video-details">
               <div className="single-video-icons">
-                <span
-                  className="pointer"
-                  onClick={() => dispatch(likeVideo({ video, encodedToken }))}>
-                  <i className="fa-regular fa-thumbs-up"></i> Like
-                </span>
-                <span className="pointer">
-                  <i className="fa-regular fa-thumbs-down"></i>Dislike
-                </span>
-                <span
-                  className="pointer"
-                  onClick={() =>
-                    dispatch(addToWatchLater({ video, encodedToken }))
-                  }>
-                  <i className="fa-regular fa-heart"></i>Add to Watch Later
-                </span>
+                {likedVideos.some(likeVideo => likeVideo._id === videoId) ? (
+                  <span className="pointer">
+                    <i className="fa-solid fa-thumbs-up"></i> Like
+                  </span>
+                ) : (
+                  <span
+                    className="pointer"
+                    onClick={() =>
+                      dispatch(likeVideo({ video, encodedToken }))
+                    }>
+                    <i className="fa-regular fa-thumbs-up"></i> Like
+                  </span>
+                )}
+                {watchLaterVideos.some(
+                  watchLaterVideo => watchLaterVideo._id === videoId
+                ) ? (
+                  <span className="pointer">
+                    <i className="fa-solid fa-heart"></i>Add to Watch Later
+                  </span>
+                ) : (
+                  <span
+                    className="pointer"
+                    onClick={() =>
+                      dispatch(addToWatchLater({ video, encodedToken }))
+                    }>
+                    <i className="fa-regular fa-heart"></i>Add to Watch Later
+                  </span>
+                )}
+
                 <span
                   className="pointer"
                   onClick={() => setOpenPlaylist(!openPlaylist)}>
