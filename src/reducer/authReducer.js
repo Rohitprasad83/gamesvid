@@ -13,11 +13,11 @@ function authReducer(state, action) {
         case 'FILL_DUMMY_DETAILS':
             return {
                 ...state,
-                firstName: 'Rohit',
-                lastName: 'Prasad',
-                email: 'rohit.prasad@neog.com',
-                password: 'rohit123456',
-                confirmPassword: 'rohit123456',
+                firstName: 'Prasad',
+                lastName: 'Rohit',
+                email: 'rohit@neog.com',
+                password: 'rohit123456*',
+                confirmPassword: 'rohit123456*',
             }
         default:
             return {...state }

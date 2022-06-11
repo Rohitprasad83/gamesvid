@@ -1,20 +1,22 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { successToast } from 'components/toast/toasts'
-
+import { logout } from 'features/auth/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 export function Navbar() {
-  const encodedToken = localStorage.getItem('token')
-  const logout = () => {
+  const dispatch = useDispatch()
+  const { encodedToken } = useSelector(state => state.auth)
+
+  const logoutHandler = () => {
+    dispatch(logout())
     successToast('You have successfully logged out')
-    localStorage.removeItem('token')
   }
   return (
     <nav className="navbar simple">
       <h3 className="navbar__header"> GamesVid </h3>
       <ul className="navbar__list">
         <li className="navbar__list__items">
-          {encodedToken !== null ? (
-            <Link to="/" onClick={logout}>
+          {encodedToken ? (
+            <Link to="/" onClick={() => logoutHandler()}>
               <button className="btn btn__secondary navbar-btn">Logout</button>
             </Link>
           ) : (

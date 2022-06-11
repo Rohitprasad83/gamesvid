@@ -3,8 +3,8 @@ import axios from 'axios'
 import { successToast, errorToast } from 'components/toast/toasts'
 
 const initialState = {
-    user: null,
-    encodedToken: null,
+    user: localStorage.getItem('user'),
+    encodedToken: localStorage.getItem('token'),
     loading: false,
     error: false,
 }
@@ -48,7 +48,14 @@ export const signUpHandler = createAsyncThunk(
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        logout: (state, action) => {
+            state.encodedToken = null
+            state.user = null
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+        },
+    },
     extraReducers: {
         [loginHandler.pending]: state => {
             state.loading = true
@@ -88,5 +95,7 @@ export const authSlice = createSlice({
         },
     },
 })
+
+export const { logout } = authSlice.actions
 
 export default authSlice.reducer
