@@ -11,15 +11,19 @@ const initialState = {
 export const getAllHistoryVideos = createAsyncThunk(
     'history/getAllHistoryVideos',
     async({ encodedToken }, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`/api/user/history`, {
-                headers: {
-                    authorization: encodedToken,
-                },
-            })
-            return response.data.history
-        } catch (error) {
-            return rejectWithValue('Could not get history videos')
+        if (encodedToken) {
+            try {
+                const response = await axios.get(`/api/user/history`, {
+                    headers: {
+                        authorization: encodedToken,
+                    },
+                })
+                return response.data.history
+            } catch (error) {
+                return rejectWithValue('Could not get history videos')
+            }
+        } else {
+            return rejectWithValue()
         }
     }
 )
@@ -65,7 +69,7 @@ export const removeFromHistory = createAsyncThunk(
                 rejectWithValue('Something went wrong, please try again later!')
             }
         } else {
-            errorToast('Please login first!')
+            return rejectWithValue('Please login first!')
         }
     }
 )

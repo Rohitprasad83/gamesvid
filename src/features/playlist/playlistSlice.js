@@ -12,15 +12,19 @@ const initialState = {
 export const getAllPlaylists = createAsyncThunk(
     'playlist/getAllPlaylist',
     async({ encodedToken }, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`/api/user/playlists`, {
-                headers: {
-                    authorization: encodedToken,
-                },
-            })
-            return response.data.playlists
-        } catch (error) {
-            rejectWithValue('Something went wrong, please try again later!')
+        if (encodedToken) {
+            try {
+                const response = await axios.get(`/api/user/playlists`, {
+                    headers: {
+                        authorization: encodedToken,
+                    },
+                })
+                return response.data.playlists
+            } catch (error) {
+                rejectWithValue('Something went wrong, please try again later!')
+            }
+        } else {
+            return rejectWithValue()
         }
     }
 )
@@ -50,7 +54,7 @@ export const addPlaylist = createAsyncThunk(
                 else return rejectWithValue('Something went wrong, Please try again!')
             }
         } else {
-            errorToast('login first')
+            return rejectWithValue('login first')
         }
     }
 )
@@ -71,7 +75,7 @@ export const deletePlaylist = createAsyncThunk(
                 return rejectWithValue('Something went wrong, please try again later!')
             }
         } else {
-            errorToast('Please login first!')
+            return rejectWithValue('Please login first!')
         }
     }
 )
@@ -103,7 +107,7 @@ export const addVideoToPlaylist = createAsyncThunk(
                 }
             }
         } else {
-            errorToast('login first')
+            return rejectWithValue('login first')
         }
     }
 )
@@ -126,7 +130,7 @@ export const deletePlaylistVideo = createAsyncThunk(
                 return rejectWithValue('Something went wrong, please try again later!')
             }
         } else {
-            errorToast('Please login first!')
+            return rejectWithValue('Please login first!')
         }
     }
 )
@@ -134,17 +138,21 @@ export const deletePlaylistVideo = createAsyncThunk(
 export const getAllPlaylistVideos = createAsyncThunk(
     'playlist/getAllPlaylistVideos',
     async({ playlistId, encodedToken }, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`/api/user/playlists/${playlistId}`, {
-                headers: {
-                    authorization: encodedToken,
-                },
-            })
-            return response.data.playlist
-        } catch (error) {
-            return rejectWithValue(
-                'Could not get all playlist videos, please try again!'
-            )
+        if (encodedToken) {
+            try {
+                const response = await axios.get(`/api/user/playlists/${playlistId}`, {
+                    headers: {
+                        authorization: encodedToken,
+                    },
+                })
+                return response.data.playlist
+            } catch (error) {
+                return rejectWithValue(
+                    'Could not get all playlist videos, please try again!'
+                )
+            }
+        } else {
+            return rejectWithValue()
         }
     }
 )

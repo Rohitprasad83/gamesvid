@@ -20,6 +20,7 @@ export function Signup() {
   const navigation = useNavigate()
   const { email, firstName, lastName, password, confirmPassword } = userState
   const { encodedToken } = useSelector(state => state.auth)
+
   const location = useLocation()
   const dispatch = useDispatch()
 

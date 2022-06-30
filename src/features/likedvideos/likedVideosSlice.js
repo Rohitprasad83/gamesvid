@@ -11,15 +11,19 @@ const initialState = {
 export const getAllLikedVideos = createAsyncThunk(
     'likes/getAllLikedVideos',
     async({ encodedToken }, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`/api/user/likes`, {
-                headers: {
-                    authorization: encodedToken,
-                },
-            })
-            return response.data.likes
-        } catch (error) {
-            return rejectWithValue('Could not get liked videos')
+        if (encodedToken) {
+            try {
+                const response = await axios.get(`/api/user/likes`, {
+                    headers: {
+                        authorization: encodedToken,
+                    },
+                })
+                return response.data.likes
+            } catch (error) {
+                return rejectWithValue('Could not get liked videos')
+            }
+        } else {
+            return rejectWithValue()
         }
     }
 )
@@ -45,7 +49,7 @@ export const likeVideo = createAsyncThunk(
                 } else return rejectWithValue('Something went wrong, Please try again!')
             }
         } else {
-            errorToast('login first')
+            return rejectWithValue('Please login first')
         }
     }
 )
@@ -65,7 +69,7 @@ export const deleteVideo = createAsyncThunk(
                 rejectWithValue('Something went wrong, please try again later!')
             }
         } else {
-            errorToast('Please login first!')
+            return rejectWithValue('Please login first!')
         }
     }
 )
@@ -86,6 +90,7 @@ export const likedVideosSlice = createSlice({
         [likeVideo.rejected]: (state, { payload }) => {
             state.loading = false
             state.error = payload
+            errorToast(payload)
         },
         [deleteVideo.pending]: state => {
             state.loading = true
@@ -99,6 +104,7 @@ export const likedVideosSlice = createSlice({
         [deleteVideo.rejected]: (state, { payload }) => {
             state.loading = false
             state.error = payload
+            errorToast(payload)
         },
         [getAllLikedVideos.pending]: state => {
             state.loading = true

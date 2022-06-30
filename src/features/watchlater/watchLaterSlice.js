@@ -11,15 +11,19 @@ const initialState = {
 export const getAllWatchLaterVideos = createAsyncThunk(
     'watchLater/getAllWatchLaterVideos',
     async({ encodedToken }, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`/api/user/watchlater`, {
-                headers: {
-                    authorization: encodedToken,
-                },
-            })
-            return response.data.watchlater
-        } catch (error) {
-            return rejectWithValue(error)
+        if (encodedToken) {
+            try {
+                const response = await axios.get(`/api/user/watchlater`, {
+                    headers: {
+                        authorization: encodedToken,
+                    },
+                })
+                return response.data.watchlater
+            } catch (error) {
+                return rejectWithValue(error)
+            }
+        } else {
+            return rejectWithValue()
         }
     }
 )
@@ -48,7 +52,7 @@ export const addToWatchLater = createAsyncThunk(
                 }
             }
         } else {
-            errorToast('login first')
+            return rejectWithValue('Please login first')
         }
     }
 )
@@ -69,7 +73,7 @@ export const removeFromWatchLater = createAsyncThunk(
                 return rejectWithValue('Something went wrong, please try again later!')
             }
         } else {
-            errorToast('Please login first!')
+            return rejectWithValue('Please login first!')
         }
     }
 )
